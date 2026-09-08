@@ -1,6 +1,6 @@
 {
   "name": "SD GERNIKA - Gestión Total",
-  "description": "SD GERNIKA - Gestión Total: Campograma interactivo, plantilla completa, fichas con estadísticas y sincronización en tiempo real.",
+  "description": "Gestión técnica integral del SD Gernika 25-26: Plantilla con fichas de jugadores, pizarra interactiva con colocación en campo, informes de rendimiento (técnica, táctica, condicional, toma de decisión, actitud, wellness, RPE) y calendario de partidos.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
