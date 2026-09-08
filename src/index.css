@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+:root {
+  --negro: #000000;
+  --blanco: #ffffff;
+  --gris: #222222;
+  --rojo: #cc0000;
+}
+
+@layer base {
+  body {
+    background-color: var(--negro);
+    color: var(--blanco);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    margin: 0;
+  }
+  
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom black & white striped accent */
+.stripe-bw {
+  background: repeating-linear-gradient(
+    45deg,
+    #000,
+    #000 8px,
+    #fff 8px,
+    #fff 16px
+  );
+}
+
+.stripe-bw-dark {
+  background: repeating-linear-gradient(
+    45deg,
+    #111,
+    #111 8px,
+    #222 8px,
+    #222 16px
+  );
+}
