@@ -1,7 +1,8 @@
 import React from 'react';
 import { Player } from '../types';
 import { useTheme } from '../context/ThemeContext';
-import { X, Edit3, Award, Phone, Mail } from 'lucide-react';
+import { X, Edit3, Phone, Mail, Calendar } from 'lucide-react';
+import { getPlayerCardData } from './Plantilla';
 
 interface FichaModalProps {
   player: Player | null;
@@ -73,53 +74,109 @@ export const FichaModal: React.FC<FichaModalProps> = ({
           />
         </div>
 
-        {/* Player Name and Info */}
-        <h2
-          id="f-nombre"
-          className={`text-xl font-black text-center mb-1 uppercase tracking-tight ${
-            theme === 'dark' ? 'text-white' : 'text-neutral-900'
-          }`}
-        >
-          {player.nombre}
-        </h2>
-        <div className="flex items-center justify-center gap-2 mb-2">
-          {player.esTitular ? (
-            <span
-              className={`px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider rounded ${
-                theme === 'dark'
-                  ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
-                  : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-              }`}
-            >
-              ★ 11 Titular 25-26
-            </span>
-          ) : (
-            <span
-              className={`px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded ${
-                theme === 'dark'
-                  ? 'bg-neutral-900 text-neutral-400 border border-neutral-800'
-                  : 'bg-neutral-100 text-neutral-600 border border-neutral-300'
-              }`}
-            >
-              Banquillo
-            </span>
-          )}
-          <span
-            className={`text-xs font-mono font-semibold ${
-              theme === 'dark' ? 'text-neutral-300' : 'text-neutral-700'
-            }`}
-          >
-            {player.posicion || 'Futbolista'}
-          </span>
-        </div>
-        <p
-          id="f-info"
-          className={`text-xs font-mono text-center mb-4 ${
-            theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
-          }`}
-        >
-          Dorsal {player.dorsal} | {player.lateralidad} | {player.nacimiento}
-        </p>
+        {/* Player Name and Dorsal */}
+        {(() => {
+          const stats = getPlayerCardData(player);
+          return (
+            <>
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span
+                  className={`px-2 py-0.5 rounded font-black font-mono text-sm border ${
+                    theme === 'dark'
+                      ? 'bg-black text-white border-neutral-700'
+                      : 'bg-neutral-100 text-black border-neutral-300'
+                  }`}
+                >
+                  #{player.dorsal}
+                </span>
+                <h2
+                  id="f-nombre"
+                  className={`text-xl font-black uppercase tracking-tight ${
+                    theme === 'dark' ? 'text-white' : 'text-neutral-900'
+                  }`}
+                >
+                  {player.nombre}
+                </h2>
+              </div>
+
+              {/* Posición */}
+              <div
+                className={`text-xs font-mono font-bold uppercase tracking-wider text-center mb-2 ${
+                  theme === 'dark' ? 'text-neutral-300' : 'text-neutral-700'
+                }`}
+              >
+                {player.posicion || 'Futbolista'}
+                {player.posicionEuskera && (
+                  <span className="text-[11px] opacity-70 font-normal italic lowercase ml-1.5">
+                    • {player.posicionEuskera}
+                  </span>
+                )}
+              </div>
+
+              {/* Fecha de Nacimiento y Edad */}
+              <div
+                className={`text-xs font-mono text-center mb-3.5 flex items-center justify-center gap-1.5 ${
+                  theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
+                }`}
+              >
+                <Calendar className="w-3.5 h-3.5 opacity-70" />
+                <span>
+                  {stats.fechaNacimiento} ({stats.edad} años) • Lateralidad: {player.lateralidad || 'Diestro'}
+                </span>
+              </div>
+
+              {/* Minutos jugados, Partidos jugados y Titular */}
+              <div
+                className={`grid grid-cols-3 gap-1.5 py-2.5 px-3 rounded border mb-4 font-mono text-center transition-colors ${
+                  theme === 'dark'
+                    ? 'bg-black/60 border-neutral-800'
+                    : 'bg-neutral-50 border-neutral-200'
+                }`}
+              >
+                <div>
+                  <span className="text-[9px] text-neutral-400 uppercase font-semibold block mb-0.5 tracking-wider">
+                    Minutos
+                  </span>
+                  <span
+                    className={`text-sm font-black ${
+                      theme === 'dark' ? 'text-white' : 'text-neutral-900'
+                    }`}
+                  >
+                    {stats.minutos}’
+                  </span>
+                </div>
+                <div
+                  className={`border-x ${
+                    theme === 'dark' ? 'border-neutral-800' : 'border-neutral-200'
+                  }`}
+                >
+                  <span className="text-[9px] text-neutral-400 uppercase font-semibold block mb-0.5 tracking-wider">
+                    Partidos
+                  </span>
+                  <span
+                    className={`text-sm font-black ${
+                      theme === 'dark' ? 'text-white' : 'text-neutral-900'
+                    }`}
+                  >
+                    {stats.partidosJugados}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[9px] text-neutral-400 uppercase font-semibold block mb-0.5 tracking-wider">
+                    Titular
+                  </span>
+                  <span
+                    className={`text-sm font-black ${
+                      theme === 'dark' ? 'text-white' : 'text-neutral-900'
+                    }`}
+                  >
+                    {stats.partidosTitular}
+                  </span>
+                </div>
+              </div>
+            </>
+          );
+        })()}
 
         {/* Contact Info (Teléfono & Correo) */}
         <div

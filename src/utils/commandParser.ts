@@ -31,7 +31,7 @@ export function parseCommand(
   ) {
     return {
       action: 'switch_tab',
-      targetTab: 'campograma',
+      targetTab: 'campo',
       message: '🔳 Mostrando Campograma táctico (4-3-3) en caracteres de la S.D. Gernika Club. Urbieta Zelaia. Gernika beti aurrera!',
       success: true,
     };
@@ -64,7 +64,7 @@ export function parseCommand(
   ) {
     return {
       action: 'switch_tab',
-      targetTab: 'notas',
+      targetTab: 'informes',
       message: '⬜ Mostrando evaluación de rendimiento del primer equipo. Escala oficial 1-5.',
       success: true,
     };
@@ -91,7 +91,7 @@ export function parseCommand(
     return {
       action: 'trigger_upload',
       targetPlayer: target || players[0],
-      targetTab: 'ficha',
+      targetTab: 'plantilla',
       message: target
         ? `🔳 Listo para procesar imagen para [#${target.dorsal} ${target.nombre}]. Puede seleccionar archivo o arrastrar la imagen en la ficha.`
         : '🔳 Seleccione un jugador o abra su ficha para procesar y cargar la fotografía oficial.',
@@ -125,7 +125,7 @@ export function parseCommand(
       return {
         action: 'view_player',
         targetPlayer: foundByDorsal,
-        targetTab: 'ficha',
+        targetTab: 'plantilla',
         message: `🔳 Ficha oficial de #${foundByDorsal.dorsal} ${foundByDorsal.nombre} abierta. Gernika beti aurrera!`,
         success: true,
       };
@@ -146,7 +146,7 @@ export function parseCommand(
       return {
         action: 'view_player',
         targetPlayer: p,
-        targetTab: 'ficha',
+        targetTab: 'plantilla',
         message: `🔳 Ficha individual de #${p.dorsal} ${p.nombre} cargada en pantalla.`,
         success: true,
       };
@@ -250,7 +250,7 @@ export function parseCommand(
 
     return {
       action: 'update_player',
-      targetTab: 'notas',
+      targetTab: 'informes',
       targetPlayer: updated,
       updatedPlayer: updated,
       message: `🔳 Evaluación registrada para ${matchedPlayer.nombre} (Dorsal ${matchedPlayer.dorsal}): Técnica ${tecnica ?? '—'}, Táctica ${tactica ?? '—'}, Condicional ${condicional ?? '—'}. ¡Gernika beti aurrera!`,

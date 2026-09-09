@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Player, InformeJugador } from '../types';
 import { useTheme } from '../context/ThemeContext';
+import { exportarResumenEstadisticoPDF } from '../utils/pdfExport';
 import {
   ClipboardCheck,
   Plus,
@@ -17,6 +18,7 @@ import {
   TrendingUp,
   User,
   HeartPulse,
+  FileDown,
 } from 'lucide-react';
 
 interface InformesViewProps {
@@ -43,6 +45,7 @@ export const InformesView: React.FC<InformesViewProps> = ({
 
   // Modal / Form state
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [formJugadorId, setFormJugadorId] = useState<string | number>(players[0]?.id || 1);
   const [formFecha, setFormFecha] = useState(new Date().toISOString().split('T')[0]);
   const [formTipo, setFormTipo] = useState<'Entrenamiento' | 'Partido'>('Entrenamiento');
@@ -127,6 +130,17 @@ export const InformesView: React.FC<InformesViewProps> = ({
 
     setIsFormOpen(false);
     setFormObservaciones('');
+  };
+
+  const handleExportPDF = () => {
+    setIsExporting(true);
+    try {
+      exportarResumenEstadisticoPDF(players, informes);
+    } catch (err) {
+      console.error('Error al generar PDF:', err);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   // Helper rating pills (1-5)
@@ -217,125 +231,158 @@ export const InformesView: React.FC<InformesViewProps> = ({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsFormOpen(true)}
-            className={`px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider border flex items-center justify-center gap-1.5 transition-all shrink-0 ${
-              theme === 'dark'
-                ? 'bg-white text-black hover:bg-neutral-200 border-white'
-                : 'bg-black text-white hover:bg-neutral-800 border-black shadow-xs'
-            }`}
-          >
-            <Plus className="w-3.5 h-3.5" />
-            + Nuevo Informe
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              id="btn-exportar-pdf"
+              type="button"
+              onClick={handleExportPDF}
+              disabled={isExporting}
+              className={`px-3.5 py-2 font-mono text-xs font-bold uppercase tracking-wider border flex items-center justify-center gap-1.5 transition-all shrink-0 cursor-pointer ${
+                theme === 'dark'
+                  ? 'bg-black text-white hover:bg-neutral-900 border-neutral-600 hover:border-white'
+                  : 'bg-white text-black hover:bg-neutral-100 border-neutral-400 hover:border-black shadow-xs'
+              }`}
+              title="Descargar documento PDF con el resumen estadístico de la plantilla"
+            >
+              <FileDown className="w-3.5 h-3.5" />
+              <span>{isExporting ? 'Generando...' : 'Exportar a PDF'}</span>
+            </button>
+
+            <button
+              id="btn-nuevo-informe"
+              type="button"
+              onClick={() => setIsFormOpen(true)}
+              className={`px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider border flex items-center justify-center gap-1.5 transition-all shrink-0 cursor-pointer ${
+                theme === 'dark'
+                  ? 'bg-white text-black hover:bg-neutral-200 border-white'
+                  : 'bg-black text-white hover:bg-neutral-800 border-black shadow-xs'
+              }`}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              + Nuevo Informe
+            </button>
+          </div>
         </div>
 
-        {/* Global Team Averages KPI Grid */}
+        {/* Global Team Averages KPI Grid - High Contrast Monochrome */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 pt-3 border-t border-neutral-800/40 text-center font-mono">
           <div
-            className={`p-2 rounded border ${
-              theme === 'dark' ? 'bg-black/60 border-neutral-800' : 'bg-neutral-50 border-neutral-200'
+            className={`p-2 rounded border transition-colors ${
+              theme === 'dark' ? 'bg-black border-neutral-800' : 'bg-neutral-50 border-neutral-300'
             }`}
           >
             <div
               className={`text-[10px] uppercase font-semibold ${
-                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500'
+                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
               }`}
             >
               Técnica (1-5)
             </div>
-            <div className="text-lg font-black text-emerald-400">{avgTecnica}</div>
+            <div className={`text-lg font-black ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+              {avgTecnica}
+            </div>
           </div>
 
           <div
-            className={`p-2 rounded border ${
-              theme === 'dark' ? 'bg-black/60 border-neutral-800' : 'bg-neutral-50 border-neutral-200'
+            className={`p-2 rounded border transition-colors ${
+              theme === 'dark' ? 'bg-black border-neutral-800' : 'bg-neutral-50 border-neutral-300'
             }`}
           >
             <div
               className={`text-[10px] uppercase font-semibold ${
-                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500'
+                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
               }`}
             >
               Táctica (1-5)
             </div>
-            <div className="text-lg font-black text-emerald-400">{avgTactica}</div>
+            <div className={`text-lg font-black ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+              {avgTactica}
+            </div>
           </div>
 
           <div
-            className={`p-2 rounded border ${
-              theme === 'dark' ? 'bg-black/60 border-neutral-800' : 'bg-neutral-50 border-neutral-200'
+            className={`p-2 rounded border transition-colors ${
+              theme === 'dark' ? 'bg-black border-neutral-800' : 'bg-neutral-50 border-neutral-300'
             }`}
           >
             <div
               className={`text-[10px] uppercase font-semibold ${
-                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500'
+                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
               }`}
             >
               Condicional (1-5)
             </div>
-            <div className="text-lg font-black text-emerald-400">{avgCondicional}</div>
+            <div className={`text-lg font-black ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+              {avgCondicional}
+            </div>
           </div>
 
           <div
-            className={`p-2 rounded border ${
-              theme === 'dark' ? 'bg-black/60 border-neutral-800' : 'bg-neutral-50 border-neutral-200'
+            className={`p-2 rounded border transition-colors ${
+              theme === 'dark' ? 'bg-black border-neutral-800' : 'bg-neutral-50 border-neutral-300'
             }`}
           >
             <div
               className={`text-[10px] uppercase font-semibold ${
-                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500'
+                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
               }`}
             >
-              Toma Decisión (1-5)
+              T. Decisión (1-5)
             </div>
-            <div className="text-lg font-black text-emerald-400">{avgTomaDecision}</div>
+            <div className={`text-lg font-black ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+              {avgTomaDecision}
+            </div>
           </div>
 
           <div
-            className={`p-2 rounded border ${
-              theme === 'dark' ? 'bg-black/60 border-neutral-800' : 'bg-neutral-50 border-neutral-200'
+            className={`p-2 rounded border transition-colors ${
+              theme === 'dark' ? 'bg-black border-neutral-800' : 'bg-neutral-50 border-neutral-300'
             }`}
           >
             <div
               className={`text-[10px] uppercase font-semibold ${
-                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500'
+                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
               }`}
             >
               Actitud (1-5)
             </div>
-            <div className="text-lg font-black text-emerald-400">{avgActitud}</div>
+            <div className={`text-lg font-black ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+              {avgActitud}
+            </div>
           </div>
 
           <div
-            className={`p-2 rounded border ${
-              theme === 'dark' ? 'bg-black/60 border-neutral-800' : 'bg-neutral-50 border-neutral-200'
+            className={`p-2 rounded border transition-colors ${
+              theme === 'dark' ? 'bg-black border-neutral-800' : 'bg-neutral-50 border-neutral-300'
             }`}
           >
             <div
               className={`text-[10px] uppercase font-semibold ${
-                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500'
+                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
               }`}
             >
               Wellness (1-5)
             </div>
-            <div className="text-lg font-black text-blue-400">{avgWellness}</div>
+            <div className={`text-lg font-black ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+              {avgWellness}
+            </div>
           </div>
 
           <div
-            className={`p-2 rounded border ${
-              theme === 'dark' ? 'bg-black/60 border-neutral-800' : 'bg-neutral-50 border-neutral-200'
+            className={`p-2 rounded border transition-colors ${
+              theme === 'dark' ? 'bg-black border-neutral-800' : 'bg-neutral-50 border-neutral-300'
             }`}
           >
             <div
               className={`text-[10px] uppercase font-semibold ${
-                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500'
+                theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'
               }`}
             >
               RPE Medio (1-10)
             </div>
-            <div className="text-lg font-black text-amber-400">{avgRPE}</div>
+            <div className={`text-lg font-black ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+              {avgRPE}
+            </div>
           </div>
         </div>
       </div>

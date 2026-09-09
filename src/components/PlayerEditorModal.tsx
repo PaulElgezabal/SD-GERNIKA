@@ -5,14 +5,14 @@ import { X, Upload, Check, AlertCircle } from 'lucide-react';
 
 interface PlayerEditorModalProps {
   player: Player | null; // null means "Nuevo Jugador"
-  isOpen: boolean;
+  isOpen?: boolean;
   onClose: () => void;
-  onSave: (playerData: Partial<Player>) => Promise<void>;
+  onSave: (playerData: Partial<Player>) => Promise<void> | void;
 }
 
 export const PlayerEditorModal: React.FC<PlayerEditorModalProps> = ({
   player,
-  isOpen,
+  isOpen = true,
   onClose,
   onSave,
 }) => {
@@ -32,6 +32,10 @@ export const PlayerEditorModal: React.FC<PlayerEditorModalProps> = ({
   const [posicionX, setPosicionX] = useState<number>(50);
   const [posicionY, setPosicionY] = useState<number>(50);
   const [posicion, setPosicion] = useState('Futbolista');
+  const [fechaNacimiento, setFechaNacimiento] = useState('');
+  const [minutosJugados, setMinutosJugados] = useState<number | ''>('');
+  const [partidosJugados, setPartidosJugados] = useState<number | ''>('');
+  const [partidosTitular, setPartidosTitular] = useState<number | ''>('');
   const [esTitular, setEsTitular] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -42,7 +46,11 @@ export const PlayerEditorModal: React.FC<PlayerEditorModalProps> = ({
     if (player) {
       setNombre(player.nombre || '');
       setDorsal(player.dorsal ?? '');
-      setNacimiento(player.nacimiento ?? 1998);
+      setNacimiento(player.nacimiento ?? 2008);
+      setFechaNacimiento(player.fechaNacimiento || '');
+      setMinutosJugados(player.minutosJugados ?? '');
+      setPartidosJugados(player.partidosJugados ?? '');
+      setPartidosTitular(player.partidosTitular ?? '');
       setLateralidad((player.lateralidad as 'Diestro' | 'Zurdo') || 'Diestro');
       setPosicion(player.posicion || 'Futbolista');
       setEsTitular(Boolean(player.esTitular));
@@ -57,7 +65,11 @@ export const PlayerEditorModal: React.FC<PlayerEditorModalProps> = ({
     } else {
       setNombre('');
       setDorsal('');
-      setNacimiento(2000);
+      setNacimiento(2008);
+      setFechaNacimiento('');
+      setMinutosJugados('');
+      setPartidosJugados('');
+      setPartidosTitular('');
       setLateralidad('Diestro');
       setPosicion('Futbolista');
       setEsTitular(false);
@@ -104,7 +116,11 @@ export const PlayerEditorModal: React.FC<PlayerEditorModalProps> = ({
         ...(player?.id ? { id: player.id } : {}),
         nombre: nombre.trim(),
         dorsal: Number(dorsal),
-        nacimiento: Number(nacimiento) || 2000,
+        nacimiento: Number(nacimiento) || 2008,
+        fechaNacimiento: fechaNacimiento.trim() || undefined,
+        minutosJugados: minutosJugados === '' ? undefined : Number(minutosJugados),
+        partidosJugados: partidosJugados === '' ? undefined : Number(partidosJugados),
+        partidosTitular: partidosTitular === '' ? undefined : Number(partidosTitular),
         lateralidad,
         posicion: posicion.trim(),
         esTitular,
@@ -202,7 +218,7 @@ export const PlayerEditorModal: React.FC<PlayerEditorModalProps> = ({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label
                 className={`block font-bold mb-1 uppercase ${
@@ -234,7 +250,7 @@ export const PlayerEditorModal: React.FC<PlayerEditorModalProps> = ({
                   theme === 'dark' ? 'text-neutral-300' : 'text-neutral-700'
                 }`}
               >
-                Año Nacimiento
+                Año Nac.
               </label>
               <input
                 id="edit-nacimiento"
@@ -243,13 +259,114 @@ export const PlayerEditorModal: React.FC<PlayerEditorModalProps> = ({
                 max="2030"
                 value={nacimiento}
                 onChange={(e) => setNacimiento(e.target.value === '' ? '' : Number(e.target.value))}
-                placeholder="Ej: 1995"
+                placeholder="Ej: 2008"
                 className={`w-full px-3 py-2 text-sm transition-colors focus:outline-none ${
                   theme === 'dark'
                     ? 'bg-black text-white border border-neutral-700 focus:border-white'
                     : 'bg-neutral-50 text-neutral-900 border border-neutral-300 focus:border-black'
                 }`}
               />
+            </div>
+
+            <div>
+              <label
+                className={`block font-bold mb-1 uppercase ${
+                  theme === 'dark' ? 'text-neutral-300' : 'text-neutral-700'
+                }`}
+              >
+                Fecha Nacimiento
+              </label>
+              <input
+                id="edit-fechanacimiento"
+                type="text"
+                value={fechaNacimiento}
+                onChange={(e) => setFechaNacimiento(e.target.value)}
+                placeholder="DD/MM/AAAA"
+                className={`w-full px-3 py-2 text-sm transition-colors focus:outline-none ${
+                  theme === 'dark'
+                    ? 'bg-black text-white border border-neutral-700 focus:border-white'
+                    : 'bg-neutral-50 text-neutral-900 border border-neutral-300 focus:border-black'
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* Estadísticas de Competición */}
+          <div
+            className={`p-3 border rounded transition-colors ${
+              theme === 'dark'
+                ? 'bg-neutral-950 border-neutral-800'
+                : 'bg-neutral-50 border-neutral-200'
+            }`}
+          >
+            <span
+              className={`block font-bold text-xs uppercase tracking-wider mb-2 ${
+                theme === 'dark' ? 'text-neutral-300' : 'text-neutral-700'
+              }`}
+            >
+              Estadísticas en Competición
+            </span>
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <label className="block text-[10px] text-neutral-400 uppercase font-mono mb-1">
+                  Minutos
+                </label>
+                <input
+                  id="edit-minutos"
+                  type="number"
+                  min="0"
+                  value={minutosJugados}
+                  onChange={(e) =>
+                    setMinutosJugados(e.target.value === '' ? '' : Number(e.target.value))
+                  }
+                  placeholder="Ej: 360"
+                  className={`w-full px-2.5 py-1.5 text-xs font-mono transition-colors focus:outline-none ${
+                    theme === 'dark'
+                      ? 'bg-black text-white border border-neutral-700 focus:border-white'
+                      : 'bg-white text-neutral-900 border border-neutral-300 focus:border-black'
+                  }`}
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] text-neutral-400 uppercase font-mono mb-1">
+                  Partidos (PJ)
+                </label>
+                <input
+                  id="edit-partidos"
+                  type="number"
+                  min="0"
+                  value={partidosJugados}
+                  onChange={(e) =>
+                    setPartidosJugados(e.target.value === '' ? '' : Number(e.target.value))
+                  }
+                  placeholder="Ej: 4"
+                  className={`w-full px-2.5 py-1.5 text-xs font-mono transition-colors focus:outline-none ${
+                    theme === 'dark'
+                      ? 'bg-black text-white border border-neutral-700 focus:border-white'
+                      : 'bg-white text-neutral-900 border border-neutral-300 focus:border-black'
+                  }`}
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] text-neutral-400 uppercase font-mono mb-1">
+                  Titularidades
+                </label>
+                <input
+                  id="edit-titularidades"
+                  type="number"
+                  min="0"
+                  value={partidosTitular}
+                  onChange={(e) =>
+                    setPartidosTitular(e.target.value === '' ? '' : Number(e.target.value))
+                  }
+                  placeholder="Ej: 4"
+                  className={`w-full px-2.5 py-1.5 text-xs font-mono transition-colors focus:outline-none ${
+                    theme === 'dark'
+                      ? 'bg-black text-white border border-neutral-700 focus:border-white'
+                      : 'bg-white text-neutral-900 border border-neutral-300 focus:border-black'
+                  }`}
+                />
+              </div>
             </div>
           </div>
 
