@@ -61,10 +61,10 @@ export const InicioView: React.FC<InicioViewProps> = ({
       id: 'plan_partido' as TabType,
       numero: '03',
       titulo: 'Plan de Partido Semanal',
-      subtitulo: 'Microciclo MD-4 a MD+1, plan de juego y rival',
+      subtitulo: 'Microciclo MD-5 a MD+1, plan de juego y rival',
       icono: ClipboardList,
-      badge: 'Jornada 5 vs Eibar B',
-      destacado: 'Objetivos tácticos',
+      badge: 'Jornada 1 vs C.D. Vasconia',
+      destacado: 'Puio (San Sebastián)',
     },
     {
       id: 'desarrollo_grupal' as TabType,
@@ -207,17 +207,17 @@ export const InicioView: React.FC<InicioViewProps> = ({
             }`}
           >
             <div className="flex items-center justify-between text-[10px] uppercase tracking-wider text-neutral-400 font-bold mb-2">
-              <span>Jornada 3 Oficial</span>
-              <span className="text-emerald-400 font-bold">● En 3 días</span>
+              <span>Jornada 1 Oficial</span>
+              <span className="text-emerald-400 font-bold">● 13/09/2026 (17:00h)</span>
             </div>
             <div className="flex items-center justify-between font-black text-sm my-1">
-              <span>SD GERNIKA</span>
+              <span>C.D. VASCONIA</span>
               <span className="text-neutral-500 font-normal">VS</span>
-              <span>UTEBO FC</span>
+              <span className="text-emerald-400">SD GERNIKA</span>
             </div>
             <div className="text-[11px] text-neutral-400 mt-1 flex items-center gap-1">
               <MapPin className="w-3 h-3 shrink-0" />
-              <span>Estadio Urbieta Zelaia</span>
+              <span>Campo Puio (San Sebastián) · Hierba Artificial</span>
             </div>
             <button
               type="button"

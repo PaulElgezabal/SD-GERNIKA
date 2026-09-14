@@ -90,10 +90,11 @@ import {
 
 const STORAGE_KEY_PLAYERS = 'sd_gernika_juvenil_plantilla_26_27_v1';
 const STORAGE_KEY_REPORTS = 'sd_gernika_juvenil_informes_26_27_v1';
-const STORAGE_KEY_MATCHES = 'sd_gernika_juvenil_partidos_26_27_v1';
-const STORAGE_KEY_CALENDAR = 'sd_gernika_juvenil_calendario_26_27_v1';
+const STORAGE_KEY_MATCHES = 'sd_gernika_juvenil_partidos_26_27_v2';
+const STORAGE_KEY_CALENDAR = 'sd_gernika_juvenil_calendario_26_27_v2';
 const STORAGE_KEY_ABP = 'sd_gernika_juvenil_abp_26_27_v1';
 const STORAGE_KEY_WELLNESS = 'sd_gernika_juvenil_wellness_26_27_v1';
+const STORAGE_KEY_STANDINGS = 'sd_gernika_juvenil_clasificacion_26_27_v2';
 
 export default function App() {
   const { theme, toggleTheme } = useTheme();
@@ -134,7 +135,8 @@ export default function App() {
     const saved = localStorage.getItem(STORAGE_KEY_MATCHES);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= 34) return parsed;
       } catch (e) {
         console.error('Error parsing local matches:', e);
       }
@@ -179,7 +181,18 @@ export default function App() {
   });
 
   // 9. Resultados y Clasif.
-  const [clasificacion] = useState<EquipoClasificacion[]>(INITIAL_STANDINGS);
+  const [clasificacion, setClasificacion] = useState<EquipoClasificacion[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_STANDINGS);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length === 18) return parsed;
+      } catch (e) {
+        console.error('Error parsing standings:', e);
+      }
+    }
+    return INITIAL_STANDINGS;
+  });
 
   // 10. Repositorio ABP state
   const [jugadasABP, setJugadasABP] = useState<JugadaABP[]>(() => {
@@ -300,6 +313,12 @@ export default function App() {
               posicion: d.posicion || localMatch?.posicion || 'Futbolista',
               posicionTactico: d.posicion_tactico || d.posicionTactico || localMatch?.posicionTactico,
               posicionEuskera: d.posicion_euskera || d.posicionEuskera || localMatch?.posicionEuskera,
+              posicionAlternativa: d.posicion_alternativa || d.posicionAlternativa || localMatch?.posicionAlternativa,
+              posicionAlternativaEuskera: d.posicion_alternativa_euskera || d.posicionAlternativaEuskera || localMatch?.posicionAlternativaEuskera,
+              posicion_x: d.posicion_x !== undefined && d.posicion_x !== null ? Number(d.posicion_x) : (localMatch?.posicion_x ?? 50),
+              posicion_y: d.posicion_y !== undefined && d.posicion_y !== null ? Number(d.posicion_y) : (localMatch?.posicion_y ?? 50),
+              posicion_alt_x: d.posicion_alt_x !== undefined && d.posicion_alt_x !== null ? Number(d.posicion_alt_x) : localMatch?.posicion_alt_x,
+              posicion_alt_y: d.posicion_alt_y !== undefined && d.posicion_alt_y !== null ? Number(d.posicion_alt_y) : localMatch?.posicion_alt_y,
               tecnica: d.tecnica !== null && d.tecnica !== undefined ? Number(d.tecnica) : (localMatch?.tecnica ?? 3),
               tactica: d.tactica !== null && d.tactica !== undefined ? Number(d.tactica) : (localMatch?.tactica ?? 3),
               condicional: d.condicional !== null && d.condicional !== undefined ? Number(d.condicional) : (localMatch?.condicional ?? 3),
@@ -310,8 +329,6 @@ export default function App() {
               fotoUrl: d.foto_url || d.fotoUrl || localMatch?.fotoUrl || '',
               telefono: d.telefono || localMatch?.telefono || '',
               email: d.email || d.correo || localMatch?.email || '',
-              posicion_x: d.posicion_x !== undefined && d.posicion_x !== null ? Number(d.posicion_x) : (localMatch?.posicion_x ?? 50),
-              posicion_y: d.posicion_y !== undefined && d.posicion_y !== null ? Number(d.posicion_y) : (localMatch?.posicion_y ?? 50),
               esTitular: Boolean(d.es_titular ?? d.esTitular ?? localMatch?.esTitular),
               enCampo: Boolean(d.en_campo ?? d.enCampo ?? localMatch?.enCampo),
             };
@@ -342,16 +359,19 @@ export default function App() {
   // Player CRUD Handlers
   const guardarJugador = async (playerData: Partial<Player>) => {
     let jugadorFinal: Player;
+    const targetPlayer =
+      (playerData.id ? players.find((p) => String(p.id) === String(playerData.id)) : null) ||
+      editingPlayer;
 
-    if (editingPlayer) {
+    if (targetPlayer) {
       jugadorFinal = {
-        ...editingPlayer,
+        ...targetPlayer,
         ...playerData,
-        id: editingPlayer.id,
+        id: targetPlayer.id,
       };
 
       setPlayers((prev) => {
-        const updated = prev.map((p) => (String(p.id) === String(editingPlayer.id) ? jugadorFinal : p));
+        const updated = prev.map((p) => (String(p.id) === String(targetPlayer.id) ? jugadorFinal : p));
         localStorage.setItem(STORAGE_KEY_PLAYERS, JSON.stringify(updated));
         return updated;
       });
@@ -373,6 +393,8 @@ export default function App() {
         posicion: playerData.posicion || 'Futbolista',
         posicionTactico: playerData.posicionTactico,
         posicionEuskera: playerData.posicionEuskera,
+        posicionAlternativa: playerData.posicionAlternativa,
+        posicionAlternativaEuskera: playerData.posicionAlternativaEuskera,
         tecnica: playerData.tecnica !== undefined ? Number(playerData.tecnica) : 3,
         tactica: playerData.tactica !== undefined ? Number(playerData.tactica) : 3,
         condicional: playerData.condicional !== undefined ? Number(playerData.condicional) : 3,
@@ -385,8 +407,12 @@ export default function App() {
         email: playerData.email || '',
         posicion_x: playerData.posicion_x ?? 50,
         posicion_y: playerData.posicion_y ?? 50,
+        posicion_alt_x: playerData.posicion_alt_x,
+        posicion_alt_y: playerData.posicion_alt_y,
         esTitular: Boolean(playerData.esTitular),
         enCampo: false,
+        habilidadesConBalon: playerData.habilidadesConBalon,
+        habilidadesSinBalon: playerData.habilidadesSinBalon,
       };
 
       setPlayers((prev) => {
@@ -422,14 +448,18 @@ export default function App() {
       };
 
       const fullPayload = { ...basePayload };
+      if (jugadorFinal.posicionAlternativa) fullPayload.posicion_alternativa = jugadorFinal.posicionAlternativa;
+      if (jugadorFinal.posicionAlternativaEuskera) fullPayload.posicion_alternativa_euskera = jugadorFinal.posicionAlternativaEuskera;
+      if (jugadorFinal.posicion_alt_x !== undefined) fullPayload.posicion_alt_x = Number(jugadorFinal.posicion_alt_x);
+      if (jugadorFinal.posicion_alt_y !== undefined) fullPayload.posicion_alt_y = Number(jugadorFinal.posicion_alt_y);
       if (jugadorFinal.fechaNacimiento) fullPayload.fecha_nacimiento = jugadorFinal.fechaNacimiento;
       if (jugadorFinal.minutosJugados !== undefined) fullPayload.minutos_jugados = Number(jugadorFinal.minutosJugados);
       if (jugadorFinal.partidosJugados !== undefined) fullPayload.partidos_jugados = Number(jugadorFinal.partidosJugados);
       if (jugadorFinal.partidosTitular !== undefined) fullPayload.partidos_titular = Number(jugadorFinal.partidosTitular);
 
       const attemptSave = async (payloadToSave: Record<string, any>) => {
-        if (editingPlayer) {
-          const numId = Number(editingPlayer.id);
+        if (targetPlayer) {
+          const numId = Number(targetPlayer.id);
           if (!isNaN(numId)) {
             return await supabase.from('jugadores').update(payloadToSave).eq('id', numId);
           }
@@ -463,8 +493,43 @@ export default function App() {
     setEditingPlayer(null);
   };
 
-  const borrarJugador = (player: Player) => {
-    setPlayerToDelete(player);
+  const borrarJugador = (target: Player | string | number) => {
+    if (typeof target === 'object' && target !== null) {
+      setPlayerToDelete(target);
+    } else {
+      const found = players.find((p) => String(p.id) === String(target));
+      if (found) setPlayerToDelete(found);
+    }
+  };
+
+  const handleQuickUpdatePlayer = async (updatedPlayer: Player) => {
+    setPlayers((prev) => {
+      const next = prev.map((p) => (String(p.id) === String(updatedPlayer.id) ? { ...p, ...updatedPlayer } : p));
+      localStorage.setItem(STORAGE_KEY_PLAYERS, JSON.stringify(next));
+      return next;
+    });
+
+    try {
+      const numId = Number(updatedPlayer.id);
+      if (!isNaN(numId)) {
+        await supabase
+          .from('jugadores')
+          .update({
+            posicion: updatedPlayer.posicion,
+            posicion_tactico: updatedPlayer.posicionTactico,
+            posicion_euskera: updatedPlayer.posicionEuskera,
+            posicion_alternativa: updatedPlayer.posicionAlternativa || null,
+            posicion_alternativa_euskera: updatedPlayer.posicionAlternativaEuskera || null,
+            posicion_x: updatedPlayer.posicion_x,
+            posicion_y: updatedPlayer.posicion_y,
+            posicion_alt_x: updatedPlayer.posicion_alt_x ?? null,
+            posicion_alt_y: updatedPlayer.posicion_alt_y ?? null,
+          })
+          .eq('id', numId);
+      }
+    } catch (err: any) {
+      console.warn('Silent sync error on quick player update:', err.message);
+    }
   };
 
   const ejecutarBorrado = async () => {
@@ -1044,6 +1109,8 @@ export default function App() {
               onDeletePlayer={borrarJugador}
               onAddNewPlayer={() => abrirEditor(null)}
               onOpenSupabaseModal={() => setIsSupabaseModalOpen(true)}
+              onUpdatePlayer={handleQuickUpdatePlayer}
+              onUpdatePlayerPosition={handleUpdatePlayerPosition}
             />
           )}
 
@@ -1140,14 +1207,24 @@ export default function App() {
       {/* MODALS */}
       {/* ========================================================================= */}
 
-      {/* Player Card Modal (Ficha Técnica) */}
+      {/* Player Card Modal (Ficha Técnica con Editar, Guardar y Borrar) */}
       {isFichaOpen && selectedPlayer && (
         <FichaModal
           player={selectedPlayer}
+          isOpen={isFichaOpen}
           onClose={() => setIsFichaOpen(false)}
           onEdit={() => {
+            // Permite abrir editor extendido si se desea
             setIsFichaOpen(false);
             abrirEditor(selectedPlayer);
+          }}
+          onSave={async (updatedData) => {
+            await guardarJugador(updatedData);
+            setSelectedPlayer((prev) => (prev ? { ...prev, ...updatedData } : null));
+          }}
+          onDelete={(playerToDelete) => {
+            setIsFichaOpen(false);
+            borrarJugador(playerToDelete);
           }}
         />
       )}

@@ -1,3 +1,19 @@
+export interface HabilidadesConBalon {
+  control: number; // Control de balón (1-5)
+  regate: number; // Regate (1-5)
+  disparo: number; // Disparo (1-5)
+  conduccion: number; // Conducción (1-5)
+  pase: number; // Pase (1-5)
+}
+
+export interface HabilidadesSinBalon {
+  presion: number; // Presión (1-5)
+  desmarque: number; // Desmarque (1-5)
+  colocacion: number; // Posicionamiento / Colocación (1-5)
+  anticipacion: number; // Anticipación (1-5)
+  sacrificio: number; // Sacrificio / Repliegue (1-5)
+}
+
 export interface Player {
   id: string | number;
   nombre: string;
@@ -11,7 +27,9 @@ export interface Player {
   lateralidad: 'Diestro' | 'Zurdo' | string;
   posicion?: string;
   posicionEuskera?: string;
-  posicionTactico?: 'POR' | 'LD' | 'DFC1' | 'DFC2' | 'LI' | 'MCD' | 'MC' | 'EI' | 'DC' | 'ED' | string;
+  posicionTactico?: 'POR' | 'LD' | 'DFC1' | 'DFC2' | 'LI' | 'CAD' | 'CAI' | 'MCD' | 'MC' | 'EI' | 'DC' | 'ED' | 'SD' | string;
+  posicionAlternativa?: string;
+  posicionAlternativaEuskera?: string;
   tecnica: number | null;
   tactica: number | null;
   condicional: number | null;
@@ -26,8 +44,12 @@ export interface Player {
   correo?: string;
   posicion_x?: number;
   posicion_y?: number;
+  posicion_alt_x?: number;
+  posicion_alt_y?: number;
   esTitular?: boolean;
   enCampo?: boolean;
+  habilidadesConBalon?: HabilidadesConBalon;
+  habilidadesSinBalon?: HabilidadesSinBalon;
 }
 
 export type TabType =
@@ -97,7 +119,7 @@ export interface EventoCalendario {
   fecha: string; // YYYY-MM-DD
   hora: string;
   lugar: string;
-  diaMicrociclo?: 'MD-4' | 'MD-3' | 'MD-2' | 'MD-1' | 'MD' | 'MD+1' | 'Descanso';
+  diaMicrociclo?: 'MD-5' | 'MD-4' | 'MD-3' | 'MD-2' | 'MD-1' | 'MD' | 'MD+1' | 'Descanso';
   descripcion?: string;
   completado?: boolean;
 }
@@ -271,4 +293,48 @@ export interface LogisticaViaje {
   horarioComida: string;
   autobusEmpresa: string;
   contactoDelegado: string;
+}
+
+// 13. Liga Nacional Juvenil / Gazteen Nazional Liga
+export interface EquipoLiga {
+  numero: number;
+  codigo: string;
+  nombre: string;
+  contacto?: string;
+  campo: string;
+  tipoHierba: 'Hierba Artificial (HA)' | 'Hierba Natural (HN)';
+  direccion: string;
+  telefono?: string;
+  fax?: string;
+  localidad: string;
+  provincia: 'Bizkaia' | 'Gipuzkoa' | 'Álava';
+  primeraEquipacion: {
+    tipoCamiseta?: string;
+    camiseta: string;
+    pantalon: string;
+    medias: string;
+  };
+  segundaEquipacion?: {
+    tipoCamiseta?: string;
+    camiseta: string;
+    pantalon: string;
+    medias: string;
+  };
+}
+
+export interface PartidoJornadaOficial {
+  id: string;
+  local: string;
+  visitante: string;
+  golesLocal?: number | null;
+  golesVisitante?: number | null;
+  jugado?: boolean;
+}
+
+export interface JornadaOficial {
+  numero: number;
+  fecha: string; // DD-MM-YYYY
+  fechaISO: string; // YYYY-MM-DD
+  vuelta: 1 | 2;
+  partidos: PartidoJornadaOficial[];
 }
