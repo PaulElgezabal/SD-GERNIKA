@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SD Gernika — Plantilla</title>
+<style>
+  :root{
+    --negro:#111111;
+    --negro-suave:#1c1c1c;
+    --gris-oscuro:#3a3a3a;
+    --gris-medio:#777777;
+    --gris-claro:#e4e4e4;
+    --gris-fondo:#f6f6f6;
+    --blanco:#ffffff;
+    --sombra: 0 2px 10px rgba(0,0,0,0.08);
+    --sombra-hover: 0 10px 24px rgba(0,0,0,0.16);
+    --radio: 14px;
+    --serif: "Georgia", "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+
+  [hidden]{ display:none !important; }
+
+  body{
+    margin:0;
+    background:var(--gris-fondo);
+    color:var(--negro);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== CABECERA ===== */
+  header.club-header{
+    background:var(--negro);
+    color:var(--blanco);
+    padding:28px 20px 32px;
+    text-align:center;
+  }
+
+  .header-inner{
+    max-width:1300px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+
+  .escudo{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:var(--blanco);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+    border:2px solid var(--blanco);
+  }
+
+  .escudo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .escudo-placeholder{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    background:var(--blanco);
+    color:var(--negro);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--serif);
+    font-weight:bold;
+    font-size:20px;
+    letter-spacing:1px;
+    border:2px solid var(--negro);
+  }
+
+  .titulo-club{
+    text-align:left;
+  }
+
+  .titulo-club h1{
+    margin:0;
+    font-family:var(--serif);
+    font-size:clamp(24px, 4vw, 34px);
+    letter-spacing:2px;
+    font-weight:700;
+    text-transform:uppercase;
+  }
+
+  .titulo-club p{
+    margin:4px 0 0;
+    font-size:13px;
+    letter-spacing:1.5px;
+    color:#c9c9c9;
+    text-transform:uppercase;
+  }
+
+  .sesion-info{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .sesion-info span{
+    font-size:12.5px;
+    color:#c9c9c9;
+    white-space:nowrap;
+  }
+
+  .sesion-info .btn-secundario{
+    padding:7px 16px;
+    font-size:12.5px;
+  }
+
+  /* ===== PANTALLA DE LOGIN ===== */
+  .pantalla-login{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      linear-gradient(rgba(17,17,17,0.82), rgba(17,17,17,0.82)),
+      url("fondo-login.jpg") center center / cover no-repeat;
+    background-color:var(--negro);
+    padding:24px;
+  }
+
+  .login-caja{
+    width:100%;
+    max-width:360px;
+    background:var(--blanco);
+    border-radius:18px;
+    padding:36px 28px 28px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+  }
+
+  .login-escudo{
+    width:76px;
+    height:76px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    overflow:hidden;
+    border:2px solid var(--negro);
+  }
+
+  .login-escudo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .login-escudo-placeholder{
+    width:100%;
+    height:100%;
+    border:none;
+    font-size:22px;
+  }
+
+  .login-titulo{
+    font-family:var(--serif);
+    font-size:24px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    margin:0 0 4px;
+  }
+
+  .login-subtitulo{
+    font-size:13px;
+    color:var(--gris-medio);
+    margin:0 0 26px;
+  }
+
+  #formLogin{
+    text-align:left;
+  }
+
+  #formLogin label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--gris-medio);
+    margin-bottom:16px;
+  }
+
+  #formLogin input{
+    display:block;
+    width:100%;
+    margin-top:6px;
+    padding:11px 12px;
+    border:1.5px solid var(--negro);
+    border-radius:8px;
+    font-size:14px;
+    font-weight:400;
+    font-family:var(--sans);
+    color:var(--negro);
+    background:var(--blanco);
+    text-transform:none;
+    letter-spacing:normal;
+  }
+
+  #formLogin input:focus{
+    outline:none;
+    box-shadow:0 0 0 3px rgba(0,0,0,0.12);
+  }
+
+  .login-error{
+    color:#b00020;
+    font-size:13px;
+    margin-bottom:12px;
+    min-height:16px;
+  }
+
+  .login-boton{
+    width:100%;
+    padding:12px;
+    font-size:14.5px;
+  }
+
+  /* ===== CONTROLES ===== */
+  .controles{
+    max-width:1300px;
+    margin:28px auto 0;
+    padding:0 20px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .buscador{
+    display:flex;
+    justify-content:center;
+  }
+
+  .buscador input{
+    width:100%;
+    max-width:420px;
+    padding:12px 18px;
+    border:1.5px solid var(--negro);
+    border-radius:999px;
+    font-size:15px;
+    background:var(--blanco);
+    color:var(--negro);
+    outline:none;
+    transition:box-shadow .2s ease;
+  }
+
+  .buscador input:focus{
+    box-shadow:0 0 0 3px rgba(0,0,0,0.12);
+  }
+
+  .buscador input::placeholder{
+    color:var(--gris-medio);
+  }
+
+  .filtros{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .filtro-btn{
+    padding:9px 20px;
+    border-radius:999px;
+    border:1.5px solid var(--negro);
+    background:var(--blanco);
+    color:var(--negro);
+    font-size:13.5px;
+    font-weight:600;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:all .18s ease;
+  }
+
+  .filtro-btn:hover{
+    background:var(--gris-claro);
+  }
+
+  .filtro-btn.activo{
+    background:var(--negro);
+    color:var(--blanco);
+  }
+
+  .contador{
+    text-align:center;
+    font-size:13px;
+    color:var(--gris-medio);
+    letter-spacing:.5px;
+  }
+
+  /* ===== GRID DE TARJETAS ===== */
+  main{
+    max-width:1300px;
+    margin:0 auto;
+    padding:24px 20px 60px;
+  }
+
+  .grid-jugadores{
+    display:flex;
+    flex-direction:column;
+    gap:32px;
+  }
+
+  .grupo-posicion .grupo-titulo{
+    font-family:var(--serif);
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--negro);
+    margin:0 0 16px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--negro);
+  }
+
+  .grid-cards{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap:18px;
+  }
+
+  @media (min-width:700px){
+    .grid-cards{ gap:22px; }
+  }
+
+  .card-jugador{
+    background:var(--blanco);
+    border:1px solid var(--gris-claro);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:18px 14px 16px;
+    text-align:center;
+    cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .card-jugador:hover,
+  .card-jugador:focus-visible{
+    transform:translateY(-5px);
+    box-shadow:var(--sombra-hover);
+    border-color:var(--negro);
+    outline:none;
+  }
+
+  .card-avatar-wrap{
+    position:relative;
+    width:92px;
+    height:92px;
+    margin-bottom:12px;
+  }
+
+  .card-avatar{
+    width:92px;
+    height:92px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center 15%;
+    display:block;
+    border:1px solid var(--gris-claro);
+  }
+
+  .card-avatar-placeholder{
+    width:92px;
+    height:92px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:26px;
+    color:var(--blanco);
+    background:linear-gradient(145deg, var(--gris-oscuro), var(--negro-suave));
+    border:1px solid var(--negro);
+  }
+
+  .card-dorsal{
+    position:absolute;
+    bottom:-6px;
+    right:-6px;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--negro);
+    color:var(--blanco);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:700;
+    border:2px solid var(--blanco);
+    box-shadow:0 1px 4px rgba(0,0,0,0.3);
+  }
+
+  .card-nombre{
+    font-size:15.5px;
+    font-weight:700;
+    color:var(--negro);
+    margin:2px 0 4px;
+    line-height:1.25;
+  }
+
+  .card-posicion{
+    font-size:12px;
+    color:var(--gris-medio);
+    text-transform:uppercase;
+    letter-spacing:.6px;
+  }
+
+  .card-fecha-nacimiento{
+    font-size:11px;
+    color:var(--gris-medio);
+    margin-top:6px;
+  }
+
+  .sin-resultados{
+    grid-column:1 / -1;
+    text-align:center;
+    padding:60px 20px;
+    color:var(--gris-medio);
+    font-size:15px;
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:100;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+  }
+
+  .modal-overlay.abierto{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .modal-box{
+    background:var(--blanco);
+    border-radius:18px;
+    max-width:360px;
+    width:100%;
+    max-height:calc(100vh - 40px);
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+    padding:34px 28px 28px;
+    text-align:center;
+    position:relative;
+    transform:translateY(14px) scale(.97);
+    transition:transform .2s ease;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+  }
+
+  .modal-overlay.abierto .modal-box{
+    transform:translateY(0) scale(1);
+  }
+
+  .modal-cerrar{
+    position:absolute;
+    top:14px;
+    right:14px;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1.5px solid var(--negro);
+    background:var(--blanco);
+    color:var(--negro);
+    font-size:16px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .15s ease, color .15s ease;
+  }
+
+  .modal-cerrar:hover{
+    background:var(--negro);
+    color:var(--blanco);
+  }
+
+  .modal-avatar-wrap{
+    position:relative;
+    width:150px;
+    height:150px;
+    margin:0 auto 18px;
+  }
+
+  .modal-avatar{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center 15%;
+    display:block;
+    border:1px solid var(--gris-claro);
+  }
+
+  .modal-avatar-placeholder{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:44px;
+    color:var(--blanco);
+    background:linear-gradient(145deg, var(--gris-oscuro), var(--negro-suave));
+    border:1px solid var(--negro);
+  }
+
+  .modal-dorsal{
+    position:absolute;
+    bottom:0;
+    right:2px;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:var(--negro);
+    color:var(--blanco);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:700;
+    border:3px solid var(--blanco);
+    box-shadow:0 2px 6px rgba(0,0,0,0.35);
+  }
+
+  .modal-nombre{
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:700;
+    margin:4px 0 6px;
+  }
+
+  .modal-posicion{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:var(--gris-medio);
+    margin-bottom:2px;
+  }
+
+  .modal-localidad{
+    font-size:13px;
+    color:var(--gris-medio);
+    margin-top:4px;
+  }
+
+  .modal-fecha-nacimiento{
+    font-size:13px;
+    color:var(--gris-medio);
+    margin-top:2px;
+  }
+
+  .modal-linea{
+    display:inline-block;
+    margin-top:14px;
+    padding:6px 16px;
+    border-radius:999px;
+    background:var(--negro);
+    color:var(--blanco);
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:600;
+  }
+
+  body.modal-abierto{
+    overflow:hidden;
+  }
+
+  /* ===== BOTONES GENÉRICOS ===== */
+  .btn-primario, .btn-secundario, .btn-peligro{
+    padding:10px 20px;
+    border-radius:999px;
+    font-size:13.5px;
+    font-weight:600;
+    letter-spacing:.4px;
+    cursor:pointer;
+    transition:all .18s ease;
+    white-space:nowrap;
+  }
+
+  .btn-primario{
+    background:var(--negro);
+    color:var(--blanco);
+    border:1.5px solid var(--negro);
+  }
+  .btn-primario:hover{ background:var(--gris-oscuro); }
+
+  .btn-secundario{
+    background:var(--blanco);
+    color:var(--negro);
+    border:1.5px solid var(--negro);
+  }
+  .btn-secundario:hover{ background:var(--gris-claro); }
+
+  .btn-peligro{
+    background:var(--blanco);
+    color:#b00020;
+    border:1.5px solid #b00020;
+  }
+  .btn-peligro:hover{ background:#b00020; color:var(--blanco); }
+
+  /* ===== BARRA SUPERIOR (vista + añadir) ===== */
+  .toolbar-superior{
+    max-width:1300px;
+    margin:0 auto;
+    padding:0 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+
+  .vista-toggle{
+    display:flex;
+    gap:8px;
+  }
+
+  .vista-btn{
+    padding:9px 18px;
+    border-radius:999px;
+    border:1.5px solid var(--negro);
+    background:var(--blanco);
+    color:var(--negro);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:all .18s ease;
+  }
+  .vista-btn:hover{ background:var(--gris-claro); }
+  .vista-btn.activo{ background:var(--negro); color:var(--blanco); }
+
+  /* ===== VISTA TABLA ===== */
+  .tabla-wrap{
+    overflow-x:auto;
+    background:var(--blanco);
+    border:1px solid var(--gris-claro);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+  }
+
+  table.tabla-jugadores{
+    width:100%;
+    border-collapse:collapse;
+    min-width:620px;
+  }
+
+  .tabla-jugadores th, .tabla-jugadores td{
+    padding:12px 16px;
+    text-align:left;
+    border-bottom:1px solid var(--gris-claro);
+    font-size:14px;
+  }
+
+  .tabla-jugadores thead th{
+    text-transform:uppercase;
+    font-size:11px;
+    letter-spacing:.6px;
+    color:var(--gris-medio);
+    background:var(--gris-fondo);
+    white-space:nowrap;
+  }
+
+  .tabla-jugadores tbody tr{
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .tabla-jugadores tbody tr:hover{ background:var(--gris-fondo); }
+  .tabla-jugadores tbody tr:last-child td{ border-bottom:none; }
+
+  .tabla-jugadores td.col-dorsal{
+    font-weight:700;
+    width:60px;
+  }
+
+  .tabla-jugadores td.col-nombre{ font-weight:600; }
+
+  .celda-acciones{
+    display:flex;
+    gap:8px;
+    white-space:nowrap;
+  }
+
+  .celda-acciones button{
+    font-size:12px;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    font-weight:600;
+  }
+
+  .celda-acciones .accion-editar{
+    border:1.5px solid var(--negro);
+    background:var(--blanco);
+    color:var(--negro);
+  }
+  .celda-acciones .accion-editar:hover{ background:var(--negro); color:var(--blanco); }
+
+  .celda-acciones .accion-borrar{
+    border:1.5px solid #b00020;
+    background:var(--blanco);
+    color:#b00020;
+  }
+  .celda-acciones .accion-borrar:hover{ background:#b00020; color:var(--blanco); }
+
+  /* ===== MODAL: ACCIONES EN DETALLE ===== */
+  .modal-acciones{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:18px;
+  }
+
+  .modal-estadisticas{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:8px 16px;
+    margin-top:18px;
+    padding-top:16px;
+    border-top:1px solid var(--gris-claro);
+    text-align:left;
+  }
+
+  .modal-estadisticas .stat-item{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+  }
+
+  .modal-estadisticas .stat-etiqueta{
+    color:var(--gris-medio);
+  }
+
+  .modal-estadisticas .stat-valor{
+    font-weight:700;
+    color:var(--negro);
+  }
+
+  /* ===== FORMULARIO AÑADIR / EDITAR ===== */
+  .form-box{
+    text-align:left;
+    max-width:380px;
+  }
+
+  .form-box h2{
+    font-family:var(--serif);
+    font-size:19px;
+    margin:0 0 20px;
+    text-align:center;
+  }
+
+  #formJugador label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--gris-medio);
+    margin-bottom:14px;
+  }
+
+  #formJugador input, #formJugador select{
+    display:block;
+    width:100%;
+    margin-top:6px;
+    padding:10px 12px;
+    border:1.5px solid var(--negro);
+    border-radius:8px;
+    font-size:14px;
+    font-weight:400;
+    font-family:var(--sans);
+    color:var(--negro);
+    background:var(--blanco);
+    text-transform:none;
+    letter-spacing:normal;
+  }
+
+  #formJugador input:focus, #formJugador select:focus{
+    outline:none;
+    box-shadow:0 0 0 3px rgba(0,0,0,0.12);
+  }
+
+  #formJugador input[type="file"]{
+    padding:8px;
+    font-size:13px;
+    cursor:pointer;
+  }
+
+  .preview-foto-archivo{
+    margin:-6px 0 14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .preview-foto-archivo img{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center 15%;
+    border:1.5px solid var(--negro);
+    display:block;
+    flex-shrink:0;
+  }
+
+  .preview-foto-archivo .btn-secundario{
+    padding:7px 14px;
+    font-size:12px;
+  }
+
+  .aviso-prioridad-foto{
+    margin:-6px 0 14px;
+    font-size:12px;
+    color:var(--gris-medio);
+    font-style:italic;
+  }
+
+  .form-error{
+    color:#b00020;
+    font-size:13px;
+    margin-bottom:8px;
+    min-height:16px;
+  }
+
+  .separador-form{
+    font-size:11.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    color:var(--gris-medio);
+    border-top:1px solid var(--gris-claro);
+    padding-top:14px;
+    margin-bottom:12px;
+  }
+
+  .grid-form-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0 14px;
+  }
+
+  .grid-form-stats label{
+    margin-bottom:12px;
+  }
+
+  .aviso-media-goles{
+    font-size:12px;
+    color:var(--gris-medio);
+    font-style:italic;
+    margin:-4px 0 14px;
+  }
+
+  .form-acciones{
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    margin-top:8px;
+  }
+
+  .estado-carga{
+    color:var(--gris-medio);
+    font-style:italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="pantalla-login" id="pantallaLogin">
+  <div class="login-caja">
+    <div class="login-escudo">
+      <img src="escudo-sd-gernika.png" alt="Escudo SD Gernika"
+           onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'escudo-placeholder login-escudo-placeholder',textContent:'SDG'}))">
+    </div>
+    <h1 class="login-titulo">SD Gernika</h1>
+    <p class="login-subtitulo">Accede a la plantilla del equipo</p>
+    <form id="formLogin" novalidate>
+      <label>Correo electrónico
+        <input type="email" id="loginEmail" autocomplete="username" required>
+      </label>
+      <label>Contraseña
+        <input type="password" id="loginPassword" autocomplete="current-password" required>
+      </label>
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="btn-primario login-boton" id="loginBoton">Iniciar sesión</button>
+    </form>
+  </div>
+</div>
+
+<div id="appContenido" hidden>
+
+<header class="club-header">
+  <div class="header-inner">
+    <div class="escudo">
+      <img src="escudo-sd-gernika.png" alt="Escudo SD Gernika"
+           onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'escudo-placeholder',textContent:'SDG'}))">
+    </div>
+    <div class="titulo-club">
+      <h1>SD Gernika</h1>
+      <p>Sociedad Deportiva Gernika Club</p>
+    </div>
+    <div class="sesion-info" id="sesionInfo">
+      <span id="sesionCorreo"></span>
+      <button type="button" class="btn-secundario" id="btnCerrarSesion">Cerrar sesión</button>
+    </div>
+  </div>
+</header>
+
+<div class="controles">
+  <div class="buscador">
+    <input type="text" id="buscador" placeholder="Buscar jugador por nombre…" autocomplete="off">
+  </div>
+  <div class="filtros" id="filtros">
+    <button class="filtro-btn activo" data-filtro="todos">Todos</button>
+    <button class="filtro-btn" data-filtro="portero">Porteros</button>
+    <button class="filtro-btn" data-filtro="defensa">Defensas</button>
+    <button class="filtro-btn" data-filtro="centrocampista">Centrocampistas</button>
+    <button class="filtro-btn" data-filtro="delantero">Delanteros</button>
+  </div>
+  <div class="contador" id="contador"></div>
+</div>
+
+<div class="toolbar-superior">
+  <div class="vista-toggle" id="vistaToggle">
+    <button class="vista-btn activo" data-vista="tarjetas">Tarjetas</button>
+    <button class="vista-btn" data-vista="tabla">Tabla</button>
+  </div>
+  <button class="btn-primario" id="btnAñadir">Añadir jugador</button>
+</div>
+
+<main>
+  <div class="grid-jugadores" id="gridJugadores"></div>
+
+  <div class="tabla-wrap" id="tablaWrap" hidden>
+    <table class="tabla-jugadores">
+      <thead>
+        <tr id="filaCabeceraTabla">
+          <th>Dorsal</th>
+          <th>Nombre</th>
+          <th>Posición</th>
+          <th>Línea</th>
+          <th>Localidad</th>
+          <th>F. nacimiento</th>
+          <th id="thAcciones">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaBody"></tbody>
+    </table>
+  </div>
+</main>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <button class="modal-cerrar" id="modalCerrar" aria-label="Cerrar">✕</button>
+    <div class="modal-avatar-wrap" id="modalAvatarWrap"></div>
+    <div class="modal-nombre" id="modalNombre"></div>
+    <div class="modal-posicion" id="modalPosicion"></div>
+    <div class="modal-localidad" id="modalLocalidad" hidden></div>
+    <div class="modal-fecha-nacimiento" id="modalFechaNacimiento" hidden></div>
+    <div style="text-align:center;">
+      <span class="modal-linea" id="modalLinea"></span>
+    </div>
+    <div class="modal-estadisticas" id="modalEstadisticas"></div>
+    <div class="modal-acciones">
+      <button class="btn-secundario" id="btnEditarDesdeModal">Editar</button>
+      <button class="btn-peligro" id="btnBorrarDesdeModal">Borrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="formOverlay">
+  <div class="modal-box form-box">
+    <button class="modal-cerrar" id="formCerrar" aria-label="Cerrar">✕</button>
+    <h2 id="formTitulo">Añadir jugador</h2>
+    <form id="formJugador" novalidate>
+      <label>Dorsal
+        <input type="number" id="campoDorsal" min="1" step="1" required>
+      </label>
+      <label>Nombre completo
+        <input type="text" id="campoNombre" required>
+      </label>
+      <label>Demarcación / posición
+        <select id="campoPosicion" required></select>
+      </label>
+      <label>Subir foto (opcional)
+        <input type="file" id="campoFotoArchivo" accept="image/*">
+      </label>
+      <div class="preview-foto-archivo" id="previewFotoArchivo" hidden>
+        <img id="previewFotoArchivoImg" alt="Vista previa">
+        <button type="button" class="btn-secundario" id="quitarFotoArchivo">Quitar archivo</button>
+      </div>
+      <div class="aviso-prioridad-foto" id="avisoPrioridadFoto" hidden>
+        Hay un archivo seleccionado: se subirá y se usará en lugar de la URL de abajo.
+      </div>
+      <label>…o ruta/URL de foto (opcional)
+        <input type="text" id="campoFoto" placeholder="img/jugador_XX.jpg">
+      </label>
+      <label>Localidad (opcional)
+        <input type="text" id="campoLocalidad" placeholder="Gernika-Lumo">
+      </label>
+      <label>Fecha de nacimiento (opcional)
+        <input type="date" id="campoFechaNacimiento">
+      </label>
+      <div class="separador-form">Estadísticas de la temporada</div>
+      <div class="grid-form-stats" id="gridFormStats"></div>
+      <div class="aviso-media-goles">La media de goles se calcula sola (goles ÷ partidos jugados).</div>
+      <div class="form-error" id="formError"></div>
+      <div class="form-acciones">
+        <button type="button" class="btn-secundario" id="formCancelar">Cancelar</button>
+        <button type="submit" class="btn-primario" id="formGuardar">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</div><!-- /#appContenido -->
+
+<script>
+  // ===== SUPABASE =====
+  // Clave "anon": pensada para exponerse en el cliente (protegida por RLS
+  // en la tabla, que solo permite lectura pública). Ver supabase_setup.sql
+  // para crear la tabla "jugadores" y cargar los datos.
+  const SUPABASE_URL = "https://dofpumfgmnmbxgytuiqj.supabase.co/rest/v1/";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvZnB1bWZnbW5tYnhneXR1aXFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0ODMzMTcsImV4cCI6MjEwNTA1OTMxN30.R8iXwsEBjE0ZPRZPAeBt4gsb1R9Y06uTyP27swYybHI";
+
+  // Bucket público de Supabase Storage para las fotos de jugadores
+  // (ver supabase_add_storage_fotos.sql para crearlo).
+  const SUPABASE_STORAGE_URL = SUPABASE_URL.replace("/rest/v1/", "/storage/v1/");
+  const BUCKET_FOTOS = "fotos-jugadores";
+
+  // ===== AUTENTICACIÓN (Supabase Auth) =====
+  // Ver supabase_add_auth_roles.sql para crear usuarios con rol
+  // ('admin' / 'editor' / 'lector') y las políticas que exigen login.
+  const SUPABASE_AUTH_URL = SUPABASE_URL.replace("/rest/v1/", "/auth/v1/");
+  const CLAVE_SESION = "sdgernika_sesion";
+
+  let sesion = null;       // { access_token, refresh_token, expires_at, user:{id,email} }
+  let perfilActual = null; // { rol, email }
+
+  function cargarSesionGuardada(){
+    try {
+      const bruto = localStorage.getItem(CLAVE_SESION);
+      return bruto ? JSON.parse(bruto) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function guardarSesion(nuevaSesion){
+    sesion = nuevaSesion;
+    try { localStorage.setItem(CLAVE_SESION, JSON.stringify(nuevaSesion)); } catch {}
+  }
+
+  function borrarSesion(){
+    sesion = null;
+    perfilActual = null;
+    try { localStorage.removeItem(CLAVE_SESION); } catch {}
+  }
+
+  function esSoloLectura(){
+    return !perfilActual || perfilActual.rol === "lector" || perfilActual.rol === "jugador";
+  }
+
+  // ===== DATOS DE RESERVA (fallback) =====
+  // Se usan si Supabase no responde (tabla aún no creada, sin conexión, etc.)
+  // El campo "foto" ya está preparado para añadir imágenes reales más adelante
+  // (ej. "img/jugador_01.jpg"). Mientras no exista el archivo, se usa un
+  // placeholder circular con las iniciales del jugador.
+  const JUGADORES_RESERVA = [
+    {dorsal:1,  nombre:"Gurutz Toña",            posicion:"Portero",           foto:"img/jugador_01.jpg"},
+    {dorsal:2,  nombre:"Alain Urrutia",          posicion:"Lateral derecho",   foto:"img/jugador_02.jpg"},
+    {dorsal:3,  nombre:"Aretx Martitegi",        posicion:"Lateral izquierdo", foto:"img/jugador_03.jpg"},
+    {dorsal:4,  nombre:"Urko Martija",           posicion:"Central izquierdo", foto:"img/jugador_04.jpg"},
+    {dorsal:5,  nombre:"Haritz Atxalandabasoa",  posicion:"Central derecho",   foto:"img/jugador_05.jpg"},
+    {dorsal:6,  nombre:"Luken Marmol",           posicion:"Medio centro",      foto:"img/jugador_06.jpg"},
+    {dorsal:7,  nombre:"Dani Urrutia",           posicion:"Medio centro",      foto:"img/jugador_07.jpg"},
+    {dorsal:8,  nombre:"Xabi López",             posicion:"Media punta",       foto:"img/jugador_08.jpg"},
+    {dorsal:9,  nombre:"Ager Kortabitarte",      posicion:"Extremo derecho",   foto:"img/jugador_09.jpg"},
+    {dorsal:10, nombre:"Aimar Carvajal",         posicion:"Medio centro",      foto:"img/jugador_10.jpg"},
+    {dorsal:11, nombre:"Antton Urzelai",         posicion:"Extremo derecho",   foto:"img/jugador_11.jpg"},
+    {dorsal:12, nombre:"Oihan Fernández",        posicion:"Lateral izquierdo", foto:"img/jugador_12.jpg"},
+    {dorsal:13, nombre:"Aratz Mendez",           posicion:"Portero",           foto:"img/jugador_13.jpg"},
+    {dorsal:14, nombre:"Ugaitz Urrutia",         posicion:"Central derecho",   foto:"img/jugador_14.jpg"},
+    {dorsal:15, nombre:"Enaitz Alberdi",         posicion:"Extremo izquierdo", foto:"img/jugador_15.jpg"},
+    {dorsal:16, nombre:"Luken Aranguena",        posicion:"Medio centro",      foto:"img/jugador_16.jpg"},
+    {dorsal:17, nombre:"Enaitz Isasi",           posicion:"Extremo izquierdo", foto:"img/jugador_17.jpg"},
+    {dorsal:18, nombre:"Markel Gorostiaga",      posicion:"Central izquierdo", foto:"img/jugador_18.jpg"},
+    {dorsal:19, nombre:"Samuel Correa",          posicion:"Delantero punta",   foto:"img/jugador_19.jpg"},
+    {dorsal:20, nombre:"Ouissam Chkairi",        posicion:"Extremo derecho",   foto:"img/jugador_20.jpg"},
+    {dorsal:21, nombre:"Joaquín Vázquez",        posicion:"Central derecho",   foto:"img/jugador_21.jpg"},
+    {dorsal:22, nombre:"Iker Larruzea",          posicion:"Delantero punta",   foto:"img/jugador_22.jpg"},
+    {dorsal:23, nombre:"Aratz Areskurrinaga",    posicion:"Delantero punta",   foto:"img/jugador_23.jpg"},
+    {dorsal:24, nombre:"Aimar Zautua",           posicion:"Lateral derecho",   foto:"img/jugador_24.jpg"},
+    {dorsal:25, nombre:"Mikel Estévez",          posicion:"Portero",           foto:"img/jugador_25.jpg"},
+    {dorsal:26, nombre:"Urko Arriaga",           posicion:"Medio centro",      foto:"img/jugador_26.jpg"},
+    {dorsal:27, nombre:"Aimar Beraza",           posicion:"Lateral izquierdo", foto:"img/jugador_27.jpg"},
+  ];
+
+  // Ordenados por dorsal por defecto
+  JUGADORES_RESERVA.sort((a, b) => a.dorsal - b.dorsal);
+
+  // Dataset activo que usa la app (empieza con la reserva local y se
+  // sustituye por los datos de Supabase en cuanto llegan).
+  let jugadores = JUGADORES_RESERVA.slice();
+
+  // ===== CLASIFICACIÓN POR LÍNEA DE JUEGO =====
+  const LINEAS = {
+    "Portero": "portero",
+    "Lateral derecho": "defensa",
+    "Lateral izquierdo": "defensa",
+    "Central izquierdo": "defensa",
+    "Central derecho": "defensa",
+    "Medio centro": "centrocampista",
+    "Media punta": "centrocampista",
+    "Extremo derecho": "delantero",
+    "Extremo izquierdo": "delantero",
+    "Delantero punta": "delantero",
+  };
+
+  const ETIQUETA_LINEA = {
+    portero: "Portero",
+    defensa: "Defensa",
+    centrocampista: "Centrocampista",
+    delantero: "Delantero",
+  };
+
+  // Estadísticas de jugador: campo en Supabase + etiqueta corta para
+  // tabla/formulario. "media_goles" es una columna calculada (goles /
+  // partidos_jugados) y se muestra aparte, no es editable.
+  const ESTADISTICAS = [
+    { campo: "partidos_convocados",       etiqueta: "Convocado" },
+    { campo: "partidos_titular",          etiqueta: "Titular" },
+    { campo: "partidos_suplente",         etiqueta: "Suplente" },
+    { campo: "partidos_jugados",          etiqueta: "Jugados" },
+    { campo: "goles",                     etiqueta: "Goles" },
+    { campo: "asistencias",               etiqueta: "Asistencias" },
+    { campo: "tarjetas_amarillas",        etiqueta: "T. amarillas" },
+    { campo: "tarjetas_rojas",            etiqueta: "T. rojas" },
+    { campo: "tarjetas_amarillas_dobles", etiqueta: "2ª amarilla" },
+  ];
+  const SELECT_ESTADISTICAS = ESTADISTICAS.map(e => e.campo).join(",") + ",media_goles";
+
+  function lineaDe(jugador){
+    return LINEAS[jugador.posicion] || "otro";
+  }
+
+  function iniciales(nombre){
+    const partes = nombre.trim().split(/\s+/);
+    const primera = partes[0]?.[0] || "";
+    const ultima = partes.length > 1 ? partes[partes.length - 1][0] : "";
+    return (primera + ultima).toUpperCase();
+  }
+
+  function normalizar(texto){
+    return texto
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "");
+  }
+
+  function formatearFecha(fechaISO){
+    if (!fechaISO) return "";
+    const [anio, mes, dia] = fechaISO.split("-");
+    if (!anio || !mes || !dia) return "";
+    return `${dia}/${mes}/${anio}`;
+  }
+
+  // ===== ESTADO =====
+  let filtroActivo = "todos";
+  let textoBusqueda = "";
+  let vistaActual = "tarjetas";
+  let usandoReserva = false;
+
+  const grid = document.getElementById("gridJugadores");
+  const tablaWrap = document.getElementById("tablaWrap");
+  const tablaBody = document.getElementById("tablaBody");
+
+  // Cabeceras de estadísticas: se insertan una vez, antes de "Acciones"
+  (function construirCabecerasEstadisticas(){
+    const thAcciones = document.getElementById("thAcciones");
+    ESTADISTICAS.forEach(({ etiqueta }) => {
+      const th = document.createElement("th");
+      th.textContent = etiqueta;
+      thAcciones.before(th);
+    });
+    const thMedia = document.createElement("th");
+    thMedia.textContent = "Media goles";
+    thAcciones.before(thMedia);
+  })();
+  const contador = document.getElementById("contador");
+  const buscadorInput = document.getElementById("buscador");
+  const filtrosContenedor = document.getElementById("filtros");
+  const vistaToggle = document.getElementById("vistaToggle");
+  const btnAñadir = document.getElementById("btnAñadir");
+
+  // ===== LOGIN / SESIÓN =====
+  const pantallaLogin = document.getElementById("pantallaLogin");
+  const appContenido = document.getElementById("appContenido");
+  const formLogin = document.getElementById("formLogin");
+  const loginEmail = document.getElementById("loginEmail");
+  const loginPassword = document.getElementById("loginPassword");
+  const loginError = document.getElementById("loginError");
+  const loginBoton = document.getElementById("loginBoton");
+  const sesionCorreo = document.getElementById("sesionCorreo");
+  const btnCerrarSesion = document.getElementById("btnCerrarSesion");
+
+  function mostrarLogin(mensaje){
+    appContenido.hidden = true;
+    pantallaLogin.hidden = false;
+    loginPassword.value = "";
+    if (mensaje) loginError.textContent = mensaje;
+  }
+
+  function actualizarUIRol(){
+    const soloLectura = esSoloLectura();
+    btnAñadir.hidden = soloLectura;
+    document.querySelectorAll(".modal-acciones").forEach(el => { el.hidden = soloLectura; });
+  }
+
+  function mostrarApp(){
+    pantallaLogin.hidden = true;
+    appContenido.hidden = false;
+    sesionCorreo.textContent = (perfilActual && perfilActual.email) || (sesion && sesion.user.email) || "";
+    actualizarUIRol();
+  }
+
+  async function cargarPerfilActual(){
+    try {
+      const resp = await fetch(`${SUPABASE_URL}perfiles?select=rol,email&id=eq.${sesion.user.id}`, {
+        headers: cabecerasSupabase(),
+      });
+      const filas = await resp.json();
+      perfilActual = filas[0] || { rol: "lector", email: sesion.user.email };
+    } catch {
+      perfilActual = { rol: "lector", email: sesion.user.email };
+    }
+  }
+
+  formLogin.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    loginError.textContent = "";
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value;
+
+    if (!email || !password){
+      loginError.textContent = "Introduce correo y contraseña.";
+      return;
+    }
+
+    loginBoton.disabled = true;
+    loginBoton.textContent = "Entrando…";
+
+    try {
+      const resp = await fetch(`${SUPABASE_AUTH_URL}token?grant_type=password`, {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const datos = await resp.json();
+      if (!resp.ok){
+        throw new Error(datos.error_description || datos.msg || "Correo o contraseña incorrectos.");
+      }
+
+      guardarSesion({
+        access_token: datos.access_token,
+        refresh_token: datos.refresh_token,
+        expires_at: Date.now() + (datos.expires_in * 1000),
+        user: { id: datos.user.id, email: datos.user.email },
+      });
+
+      await cargarPerfilActual();
+      mostrarApp();
+      iniciar();
+    } catch (err){
+      loginError.textContent = err.message;
+    } finally {
+      loginBoton.disabled = false;
+      loginBoton.textContent = "Iniciar sesión";
+    }
+  });
+
+  btnCerrarSesion.addEventListener("click", () => {
+    borrarSesion();
+    mostrarLogin();
+  });
+
+  // ===== VISTA: TARJETAS / TABLA =====
+  vistaToggle.addEventListener("click", (e) => {
+    const btn = e.target.closest(".vista-btn");
+    if (!btn) return;
+    vistaToggle.querySelectorAll(".vista-btn").forEach(b => b.classList.remove("activo"));
+    btn.classList.add("activo");
+    vistaActual = btn.dataset.vista;
+    grid.hidden = vistaActual !== "tarjetas";
+    tablaWrap.hidden = vistaActual !== "tabla";
+    render();
+  });
+
+  function avatarHTML(jugador, tamañoClasePrefix){
+    const inic = iniciales(jugador.nombre);
+    if (!jugador.foto){
+      return `<div class="${tamañoClasePrefix}-avatar-placeholder">${inic}</div>`;
+    }
+    return `
+      <img class="${tamañoClasePrefix}-avatar" src="${jugador.foto}" alt="${jugador.nombre}"
+           onerror="this.outerHTML='<div class=&quot;${tamañoClasePrefix}-avatar-placeholder&quot;>${inic}</div>'">
+    `;
+  }
+
+  function crearCard(jugador){
+    const card = document.createElement("article");
+    card.className = "card-jugador";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", `${jugador.nombre}, dorsal ${jugador.dorsal}, ${jugador.posicion}`);
+
+    const fechaFormateada = formatearFecha(jugador.fecha_nacimiento);
+
+    card.innerHTML = `
+      <div class="card-avatar-wrap">
+        ${avatarHTML(jugador, "card")}
+        <div class="card-dorsal">${jugador.dorsal}</div>
+      </div>
+      <div class="card-nombre">${jugador.nombre}</div>
+      <div class="card-posicion">${jugador.posicion}</div>
+      ${fechaFormateada ? `<div class="card-fecha-nacimiento">${fechaFormateada}</div>` : ""}
+    `;
+
+    card.addEventListener("click", () => abrirModal(jugador));
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        abrirModal(jugador);
+      }
+    });
+
+    return card;
+  }
+
+  function crearFilaTabla(jugador){
+    const tr = document.createElement("tr");
+
+    const tdDorsal = document.createElement("td");
+    tdDorsal.className = "col-dorsal";
+    tdDorsal.textContent = jugador.dorsal;
+
+    const tdNombre = document.createElement("td");
+    tdNombre.className = "col-nombre";
+    tdNombre.textContent = jugador.nombre;
+
+    const tdPosicion = document.createElement("td");
+    tdPosicion.textContent = jugador.posicion;
+
+    const tdLinea = document.createElement("td");
+    tdLinea.textContent = ETIQUETA_LINEA[lineaDe(jugador)] || "";
+
+    const tdLocalidad = document.createElement("td");
+    tdLocalidad.textContent = jugador.localidad || "—";
+
+    const tdFechaNacimiento = document.createElement("td");
+    tdFechaNacimiento.textContent = formatearFecha(jugador.fecha_nacimiento) || "—";
+
+    const tdsEstadisticas = ESTADISTICAS.map(({ campo }) => {
+      const td = document.createElement("td");
+      td.textContent = jugador[campo] ?? 0;
+      return td;
+    });
+
+    const tdMediaGoles = document.createElement("td");
+    tdMediaGoles.textContent = jugador.media_goles ?? "0.00";
+
+    const tdAcciones = document.createElement("td");
+    if (!esSoloLectura()){
+      tdAcciones.innerHTML = `
+        <div class="celda-acciones">
+          <button type="button" class="accion-editar">Editar</button>
+          <button type="button" class="accion-borrar">Borrar</button>
+        </div>
+      `;
+      tdAcciones.querySelector(".accion-editar").addEventListener("click", (e) => {
+        e.stopPropagation();
+        abrirFormulario("editar", jugador);
+      });
+      tdAcciones.querySelector(".accion-borrar").addEventListener("click", (e) => {
+        e.stopPropagation();
+        confirmarBorrado(jugador);
+      });
+    }
+
+    tr.append(tdDorsal, tdNombre, tdPosicion, tdLinea, tdLocalidad, tdFechaNacimiento, ...tdsEstadisticas, tdMediaGoles, tdAcciones);
+    tr.addEventListener("click", () => abrirModal(jugador));
+
+    return tr;
+  }
+
+  function render(){
+    const texto = normalizar(textoBusqueda.trim());
+
+    const filtrados = jugadores.filter(j => {
+      const pasaLinea = filtroActivo === "todos" || lineaDe(j) === filtroActivo;
+      const pasaBusqueda = texto === "" || normalizar(j.nombre).includes(texto);
+      return pasaLinea && pasaBusqueda;
+    });
+
+    if (vistaActual === "tabla"){
+      tablaBody.innerHTML = "";
+      if (filtrados.length === 0){
+        tablaBody.innerHTML = `<tr><td colspan="17" class="sin-resultados">No se han encontrado jugadores.</td></tr>`;
+      } else {
+        const frag = document.createDocumentFragment();
+        filtrados.forEach(j => frag.appendChild(crearFilaTabla(j)));
+        tablaBody.appendChild(frag);
+      }
+    } else {
+      grid.innerHTML = "";
+      if (filtrados.length === 0){
+        grid.innerHTML = `<div class="sin-resultados">No se han encontrado jugadores.</div>`;
+      } else {
+        const ORDEN_GRUPOS = ["portero", "defensa", "centrocampista", "delantero"];
+        const TITULO_GRUPO = {
+          portero: "Porteros",
+          defensa: "Defensas",
+          centrocampista: "Centrocampistas",
+          delantero: "Delanteros",
+        };
+        const frag = document.createDocumentFragment();
+        ORDEN_GRUPOS.forEach(linea => {
+          const delGrupo = filtrados.filter(j => lineaDe(j) === linea);
+          if (delGrupo.length === 0) return;
+
+          const seccion = document.createElement("section");
+          seccion.className = "grupo-posicion";
+
+          const titulo = document.createElement("h2");
+          titulo.className = "grupo-titulo";
+          titulo.textContent = TITULO_GRUPO[linea];
+
+          const gridCards = document.createElement("div");
+          gridCards.className = "grid-cards";
+          delGrupo.forEach(j => gridCards.appendChild(crearCard(j)));
+
+          seccion.append(titulo, gridCards);
+          frag.appendChild(seccion);
+        });
+        grid.appendChild(frag);
+      }
+    }
+
+    const sufijoReserva = usandoReserva ? " (datos locales, sin conexión a Supabase)" : "";
+    contador.textContent = `${filtrados.length} jugador${filtrados.length === 1 ? "" : "es"}${sufijoReserva}`;
+  }
+
+  // ===== FILTROS =====
+  filtrosContenedor.addEventListener("click", (e) => {
+    const btn = e.target.closest(".filtro-btn");
+    if (!btn) return;
+    filtrosContenedor.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("activo"));
+    btn.classList.add("activo");
+    filtroActivo = btn.dataset.filtro;
+    render();
+  });
+
+  // ===== BUSCADOR =====
+  buscadorInput.addEventListener("input", (e) => {
+    textoBusqueda = e.target.value;
+    render();
+  });
+
+  // ===== MODAL DE DETALLE =====
+  const modalOverlay = document.getElementById("modalOverlay");
+  const modalAvatarWrap = document.getElementById("modalAvatarWrap");
+  const modalNombre = document.getElementById("modalNombre");
+  const modalPosicion = document.getElementById("modalPosicion");
+  const modalLinea = document.getElementById("modalLinea");
+  const modalLocalidad = document.getElementById("modalLocalidad");
+  const modalFechaNacimiento = document.getElementById("modalFechaNacimiento");
+  const modalEstadisticas = document.getElementById("modalEstadisticas");
+  const modalCerrarBtn = document.getElementById("modalCerrar");
+  const btnEditarDesdeModal = document.getElementById("btnEditarDesdeModal");
+  const btnBorrarDesdeModal = document.getElementById("btnBorrarDesdeModal");
+
+  let jugadorEnModal = null;
+
+  function abrirModal(jugador){
+    jugadorEnModal = jugador;
+    modalAvatarWrap.innerHTML = `
+      ${avatarHTML(jugador, "modal")}
+      <div class="modal-dorsal">${jugador.dorsal}</div>
+    `;
+    modalNombre.textContent = jugador.nombre;
+    modalPosicion.textContent = jugador.posicion;
+    if (jugador.localidad){
+      modalLocalidad.textContent = jugador.localidad;
+      modalLocalidad.hidden = false;
+    } else {
+      modalLocalidad.textContent = "";
+      modalLocalidad.hidden = true;
+    }
+    const fechaFormateada = formatearFecha(jugador.fecha_nacimiento);
+    if (fechaFormateada){
+      modalFechaNacimiento.textContent = `Nacido el ${fechaFormateada}`;
+      modalFechaNacimiento.hidden = false;
+    } else {
+      modalFechaNacimiento.textContent = "";
+      modalFechaNacimiento.hidden = true;
+    }
+    modalLinea.textContent = ETIQUETA_LINEA[lineaDe(jugador)] || "";
+
+    const filasStats = ESTADISTICAS.map(({ campo, etiqueta }) => `
+      <div class="stat-item">
+        <span class="stat-etiqueta">${etiqueta}</span>
+        <span class="stat-valor">${jugador[campo] ?? 0}</span>
+      </div>
+    `).join("") + `
+      <div class="stat-item">
+        <span class="stat-etiqueta">Media goles</span>
+        <span class="stat-valor">${jugador.media_goles ?? "0.00"}</span>
+      </div>
+    `;
+    modalEstadisticas.innerHTML = filasStats;
+
+    modalOverlay.classList.add("abierto");
+    document.body.classList.add("modal-abierto");
+  }
+
+  function cerrarModal(){
+    modalOverlay.classList.remove("abierto");
+    document.body.classList.remove("modal-abierto");
+  }
+
+  modalCerrarBtn.addEventListener("click", cerrarModal);
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) cerrarModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape"){
+      cerrarModal();
+      cerrarFormulario();
+    }
+  });
+
+  btnEditarDesdeModal.addEventListener("click", () => {
+    const jugador = jugadorEnModal;
+    cerrarModal();
+    abrirFormulario("editar", jugador);
+  });
+
+  btnBorrarDesdeModal.addEventListener("click", () => {
+    const jugador = jugadorEnModal;
+    cerrarModal();
+    confirmarBorrado(jugador);
+  });
+
+  // ===== SUPABASE: LECTURA Y ESCRITURA =====
+  function cabecerasSupabase(extra){
+    return Object.assign({
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${sesion ? sesion.access_token : SUPABASE_ANON_KEY}`,
+    }, extra || {});
+  }
+
+  async function extraerError(resp){
+    try {
+      const data = await resp.json();
+      return data.message || `Error ${resp.status}`;
+    } catch {
+      return `Error ${resp.status}`;
+    }
+  }
+
+  // Envoltorio de fetch para las llamadas a Supabase: si la sesión ha
+  // caducado (401), cierra sesión y vuelve a mostrar la pantalla de login
+  // en vez de dejar que cada función falle con un error críptico.
+  async function fetchSupabase(url, opciones){
+    const resp = await fetch(url, opciones);
+    if (resp.status === 401){
+      borrarSesion();
+      mostrarLogin();
+      loginError.textContent = "Tu sesión ha caducado. Inicia sesión de nuevo.";
+      throw new Error("Sesión caducada.");
+    }
+    return resp;
+  }
+
+  async function cargarDesdeSupabase(){
+    const url = `${SUPABASE_URL}jugadores?select=dorsal,nombre,posicion,foto,localidad,fecha_nacimiento,${SELECT_ESTADISTICAS}&order=dorsal.asc`;
+    const resp = await fetchSupabase(url, { headers: cabecerasSupabase() });
+    if (!resp.ok) throw new Error(await extraerError(resp));
+    const data = await resp.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error("La tabla de Supabase está vacía.");
+    return data;
+  }
+
+  async function crearJugadorSupabase(datos){
+    const resp = await fetchSupabase(`${SUPABASE_URL}jugadores`, {
+      method: "POST",
+      headers: cabecerasSupabase({
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      }),
+      body: JSON.stringify([datos]),
+    });
+    if (!resp.ok) throw new Error(await extraerError(resp));
+    const filas = await resp.json();
+    return filas[0];
+  }
+
+  async function actualizarJugadorSupabase(dorsalOriginal, datos){
+    const resp = await fetchSupabase(`${SUPABASE_URL}jugadores?dorsal=eq.${dorsalOriginal}`, {
+      method: "PATCH",
+      headers: cabecerasSupabase({
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      }),
+      body: JSON.stringify(datos),
+    });
+    if (!resp.ok) throw new Error(await extraerError(resp));
+    const filas = await resp.json();
+    return filas[0];
+  }
+
+  async function borrarJugadorSupabase(dorsal){
+    const resp = await fetchSupabase(`${SUPABASE_URL}jugadores?dorsal=eq.${dorsal}`, {
+      method: "DELETE",
+      headers: cabecerasSupabase(),
+    });
+    if (!resp.ok) throw new Error(await extraerError(resp));
+  }
+
+  async function subirFotoSupabase(dorsal, archivo){
+    const extension = (archivo.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const ruta = `jugador-${dorsal}-${Date.now()}.${extension}`;
+    const resp = await fetchSupabase(`${SUPABASE_STORAGE_URL}object/${BUCKET_FOTOS}/${ruta}`, {
+      method: "POST",
+      headers: cabecerasSupabase({
+        "Content-Type": archivo.type || "application/octet-stream",
+      }),
+      body: archivo,
+    });
+    if (!resp.ok) throw new Error(await extraerError(resp));
+    return `${SUPABASE_STORAGE_URL}object/public/${BUCKET_FOTOS}/${ruta}`;
+  }
+
+  // ===== FORMULARIO: AÑADIR / EDITAR =====
+  const formOverlay = document.getElementById("formOverlay");
+  const formJugador = document.getElementById("formJugador");
+  const formTitulo = document.getElementById("formTitulo");
+  const formError = document.getElementById("formError");
+  const formCerrarBtn = document.getElementById("formCerrar");
+  const formCancelarBtn = document.getElementById("formCancelar");
+  const formGuardarBtn = document.getElementById("formGuardar");
+  const campoDorsal = document.getElementById("campoDorsal");
+  const campoNombre = document.getElementById("campoNombre");
+  const campoPosicion = document.getElementById("campoPosicion");
+  const campoFoto = document.getElementById("campoFoto");
+  const campoFotoArchivo = document.getElementById("campoFotoArchivo");
+  const previewFotoArchivo = document.getElementById("previewFotoArchivo");
+  const previewFotoArchivoImg = document.getElementById("previewFotoArchivoImg");
+  const quitarFotoArchivoBtn = document.getElementById("quitarFotoArchivo");
+  const avisoPrioridadFoto = document.getElementById("avisoPrioridadFoto");
+  const campoLocalidad = document.getElementById("campoLocalidad");
+  const campoFechaNacimiento = document.getElementById("campoFechaNacimiento");
+
+  Object.keys(LINEAS).forEach(posicion => {
+    const opt = document.createElement("option");
+    opt.value = posicion;
+    opt.textContent = posicion;
+    campoPosicion.appendChild(opt);
+  });
+
+  // Inputs numéricos de estadísticas, generados a partir de ESTADISTICAS
+  const gridFormStats = document.getElementById("gridFormStats");
+  const camposStats = {};
+  ESTADISTICAS.forEach(({ campo, etiqueta }) => {
+    const label = document.createElement("label");
+    label.textContent = etiqueta;
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.step = "1";
+    input.value = "0";
+    label.appendChild(input);
+    gridFormStats.appendChild(label);
+    camposStats[campo] = input;
+  });
+
+  function limpiarSeleccionArchivo(){
+    campoFotoArchivo.value = "";
+    previewFotoArchivo.hidden = true;
+    previewFotoArchivoImg.src = "";
+    avisoPrioridadFoto.hidden = true;
+  }
+
+  campoFotoArchivo.addEventListener("change", () => {
+    const archivo = campoFotoArchivo.files[0];
+    if (!archivo){
+      previewFotoArchivo.hidden = true;
+      previewFotoArchivoImg.src = "";
+      avisoPrioridadFoto.hidden = true;
+      return;
+    }
+    const urlLocal = URL.createObjectURL(archivo);
+    previewFotoArchivoImg.src = urlLocal;
+    previewFotoArchivo.hidden = false;
+    avisoPrioridadFoto.hidden = false;
+  });
+
+  quitarFotoArchivoBtn.addEventListener("click", limpiarSeleccionArchivo);
+
+  let modoFormulario = "crear";
+  let dorsalEnEdicion = null;
+
+  function abrirFormulario(modo, jugador){
+    modoFormulario = modo;
+    formError.textContent = "";
+    formJugador.reset();
+    limpiarSeleccionArchivo();
+
+    if (modo === "editar" && jugador){
+      dorsalEnEdicion = jugador.dorsal;
+      formTitulo.textContent = "Editar jugador";
+      campoDorsal.value = jugador.dorsal;
+      campoNombre.value = jugador.nombre;
+      campoPosicion.value = jugador.posicion;
+      campoFoto.value = jugador.foto || "";
+      campoLocalidad.value = jugador.localidad || "";
+      campoFechaNacimiento.value = jugador.fecha_nacimiento || "";
+      ESTADISTICAS.forEach(({ campo }) => {
+        camposStats[campo].value = jugador[campo] ?? 0;
+      });
+    } else {
+      dorsalEnEdicion = null;
+      formTitulo.textContent = "Añadir jugador";
+      campoPosicion.value = Object.keys(LINEAS)[0];
+      ESTADISTICAS.forEach(({ campo }) => {
+        camposStats[campo].value = 0;
+      });
+    }
+
+    formOverlay.classList.add("abierto");
+    document.body.classList.add("modal-abierto");
+  }
+
+  function cerrarFormulario(){
+    formOverlay.classList.remove("abierto");
+    document.body.classList.remove("modal-abierto");
+  }
+
+  btnAñadir.addEventListener("click", () => abrirFormulario("crear"));
+  formCerrarBtn.addEventListener("click", cerrarFormulario);
+  formCancelarBtn.addEventListener("click", cerrarFormulario);
+  formOverlay.addEventListener("click", (e) => {
+    if (e.target === formOverlay) cerrarFormulario();
+  });
+
+  formJugador.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    formError.textContent = "";
+
+    const dorsal = parseInt(campoDorsal.value, 10);
+    const nombre = campoNombre.value.trim();
+    const posicion = campoPosicion.value;
+    const foto = campoFoto.value.trim();
+    const localidad = campoLocalidad.value.trim();
+    const fechaNacimiento = campoFechaNacimiento.value;
+
+    if (!dorsal || dorsal < 1 || !nombre || !posicion){
+      formError.textContent = "Completa dorsal, nombre y posición.";
+      return;
+    }
+
+    const duplicado = jugadores.some(j => j.dorsal === dorsal && j.dorsal !== dorsalEnEdicion);
+    if (duplicado){
+      formError.textContent = `Ya existe un jugador con el dorsal ${dorsal}.`;
+      return;
+    }
+
+    formGuardarBtn.disabled = true;
+    formGuardarBtn.textContent = "Guardando…";
+
+    try {
+      if (usandoReserva){
+        throw new Error("Sin conexión a Supabase: no se puede guardar (revisa supabase_setup.sql).");
+      }
+
+      let fotoFinal = foto || null;
+      const archivoFoto = campoFotoArchivo.files[0];
+      if (archivoFoto){
+        formGuardarBtn.textContent = "Subiendo foto…";
+        fotoFinal = await subirFotoSupabase(dorsal, archivoFoto);
+        formGuardarBtn.textContent = "Guardando…";
+      }
+
+      const datosEstadisticas = {};
+      ESTADISTICAS.forEach(({ campo }) => {
+        datosEstadisticas[campo] = parseInt(camposStats[campo].value, 10) || 0;
+      });
+
+      const datos = {
+        dorsal, nombre, posicion,
+        foto: fotoFinal,
+        localidad: localidad || null,
+        fecha_nacimiento: fechaNacimiento || null,
+        ...datosEstadisticas,
+      };
+
+      if (modoFormulario === "editar"){
+        await actualizarJugadorSupabase(dorsalEnEdicion, datos);
+        const idx = jugadores.findIndex(j => j.dorsal === dorsalEnEdicion);
+        if (idx !== -1) jugadores[idx] = datos;
+      } else {
+        await crearJugadorSupabase(datos);
+        jugadores.push(datos);
+      }
+      jugadores.sort((a, b) => a.dorsal - b.dorsal);
+      cerrarFormulario();
+      render();
+    } catch (err){
+      formError.textContent = "No se pudo guardar: " + err.message;
+    } finally {
+      formGuardarBtn.disabled = false;
+      formGuardarBtn.textContent = "Guardar";
+    }
+  });
+
+  // ===== BORRAR =====
+  async function confirmarBorrado(jugador){
+    if (!jugador) return;
+    const ok = confirm(`¿Seguro que quieres borrar a ${jugador.nombre} (dorsal ${jugador.dorsal})?`);
+    if (!ok) return;
+
+    if (usandoReserva){
+      alert("Sin conexión a Supabase: no se puede borrar (revisa supabase_setup.sql).");
+      return;
+    }
+
+    try {
+      await borrarJugadorSupabase(jugador.dorsal);
+      jugadores = jugadores.filter(j => j.dorsal !== jugador.dorsal);
+      render();
+    } catch (err){
+      alert("No se pudo borrar: " + err.message);
+    }
+  }
+
+  // ===== INICIO =====
+  async function iniciar(){
+    render(); // muestra la reserva local al instante mientras carga Supabase
+    try {
+      const datos = await cargarDesdeSupabase();
+      jugadores = datos.slice().sort((a, b) => a.dorsal - b.dorsal);
+      usandoReserva = false;
+    } catch (err){
+      console.warn("No se pudo cargar desde Supabase, usando datos locales:", err);
+      usandoReserva = true;
+      jugadores = JUGADORES_RESERVA.slice();
+    }
+    render();
+  }
+
+  // Si ya había una sesión guardada (login previo), entra directo a la
+  // app; si no, se queda en la pantalla de login.
+  (async function arrancar(){
+    const guardada = cargarSesionGuardada();
+    if (guardada && guardada.access_token){
+      sesion = guardada;
+      await cargarPerfilActual();
+      mostrarApp();
+      iniciar();
+    } else {
+      mostrarLogin();
+    }
+  })();
+</script>
+
+</body>
+</html>
