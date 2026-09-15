@@ -1,0 +1,6 @@
+{
+  "name": "SD GERNIKA JUVENIL - Liga Nacional 26/27",
+  "description": "Plataforma técnica integral de la SD Gernika Juvenil en Liga Nacional para la temporada 2026-2027: plantilla oficial con 27 futbolistas, calendario de microciclo, plan de partido semanal, desarrollo grupal e individual, wellness y RPE, estadísticas, resultados y clasificación, repositorio ABP, editor de vídeo y gestión del club.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

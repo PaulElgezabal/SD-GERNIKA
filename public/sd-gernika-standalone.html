@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD GERNIKA - Gestión Total</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root { --negro: #000000; --blanco: #ffffff; --gris: #222; --rojo: #cc0000; }
+        body { background: var(--negro); color: var(--blanco); font-family: sans-serif; margin: 0; padding-bottom: 50px; }
+        header { padding: 20px; text-align: center; border-bottom: 1px solid var(--gris); }
+        
+        .nav { display: flex; justify-content: center; gap: 10px; margin: 20px; }
+        button { cursor: pointer; padding: 10px 15px; font-weight: bold; text-transform: uppercase; border: 1px solid var(--blanco); transition: 0.3s; }
+        .btn-main { background: var(--blanco); color: var(--negro); }
+        .btn-outline { background: transparent; color: var(--blanco); }
+        .btn-danger { background: var(--rojo); color: white; border: none; }
+        button:hover { opacity: 0.8; }
+
+        /* CAMPOGRAMA */
+        #campograma {
+            position: relative; width: 350px; height: 500px; margin: 0 auto;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1000');
+            background-size: cover; border: 2px solid var(--blanco); border-radius: 10px;
+        }
+        .jugador-dot {
+            position: absolute; width: 30px; height: 30px; background: var(--negro);
+            color: var(--blanco); border: 2px solid var(--blanco); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 11px;
+            cursor: pointer; transform: translate(-50%, -50%);
+        }
+
+        /* TABLA */
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--gris); text-align: left; }
+        .actions { display: flex; gap: 5px; }
+
+        /* MODALES */
+        .modal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #111; border: 2px solid var(--blanco); padding: 25px; z-index: 1000;
+            width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto;
+        }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; }
+        
+        input, select { width: 100%; padding: 8px; margin: 8px 0; background: #000; color: #fff; border: 1px solid #444; }
+        .ficha-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid var(--blanco); display: block; margin: 0 auto 15px; }
+        .stats-bar { background: #333; height: 10px; width: 100%; border-radius: 5px; margin: 5px 0 15px; }
+        .stats-fill { background: var(--blanco); height: 100%; border-radius: 5px; }
+        
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>SD GERNIKA CLUB</h1>
+</header>
+
+<div class="nav">
+    <button class="btn-main" onclick="showTab('campo')">Campograma</button>
+    <button class="btn-main" onclick="showTab('lista')">Plantilla</button>
+    <button class="btn-outline" onclick="abrirEditor()">+ Añadir Jugador</button>
+</div>
+
+<!-- VISTA CAMPO -->
+<div id="tab-campo" class="container">
+    <div id="campograma"></div>
+</div>
+
+<!-- VISTA LISTA -->
+<div id="tab-lista" class="container hidden">
+    <table>
+        <thead>
+            <tr>
+                <th>Dorsal</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-cuerpo"></tbody>
+    </table>
+</div>
+
+<!-- MODAL EDITOR (Añadir/Editar) -->
+<div id="overlay-editor" class="overlay" onclick="cerrarModales()"></div>
+<div id="modal-editor" class="modal">
+    <h2 id="editor-titulo">Nuevo Jugador</h2>
+    <input type="hidden" id="edit-id">
+    <label>Nombre y Apellido</label><input type="text" id="edit-nombre">
+    <label>Dorsal</label><input type="number" id="edit-dorsal">
+    <label>Año Nacimiento</label><input type="number" id="edit-nacimiento">
+    <label>Lateralidad</label>
+    <select id="edit-lateralidad">
+        <option value="Diestro">Diestro</option>
+        <option value="Zurdo">Zurdo</option>
+    </select>
+    <label>Teléfono</label><input type="tel" id="edit-telefono" placeholder="+34 600 00 00 00">
+    <label>Correo Electrónico</label><input type="email" id="edit-email" placeholder="jugador@gernikaclub.eus">
+    <label>URL Foto</label><input type="text" id="edit-foto" placeholder="https://...">
+    <hr>
+    <label>Técnica (1-5)</label><input type="number" id="edit-tecnica" min="1" max="5">
+    <label>Táctica (1-5)</label><input type="number" id="edit-tactica" min="1" max="5">
+    <label>Condicional (1-5)</label><input type="number" id="edit-condicional" min="1" max="5">
+    <hr>
+    <p><small>Posición en campo (0-100)</small></p>
+    <label>X (Horizontal)</label><input type="number" id="edit-x">
+    <label>Y (Vertical)</label><input type="number" id="edit-y">
+    
+    <button class="btn-main" style="width:100%" onclick="guardarJugador()">GUARDAR</button>
+    <button class="btn-outline" style="width:100%; margin-top:10px" onclick="cerrarModales()">CANCELAR</button>
+</div>
+
+<!-- MODAL FICHA (Ver Detalles) -->
+<div id="overlay-ficha" class="overlay" onclick="cerrarModales()"></div>
+<div id="modal-ficha" class="modal">
+    <img id="f-foto" src="" class="ficha-img" onerror="this.src='https://via.placeholder.com/100?text=SDG'">
+    <h2 id="f-nombre" style="text-align:center; margin-bottom:5px;"></h2>
+    <p id="f-info" style="text-align:center; color:#aaa; margin-top:0;"></p>
+    <div id="f-contacto" style="background:#111; padding:8px; border:1px solid #333; margin-bottom:15px; font-size:11px;">
+        <div>📞 <b style="color:#fff;">Tel:</b> <span id="f-tel" style="color:#ccc;"></span></div>
+        <div style="margin-top:4px;">✉️ <b style="color:#fff;">Email:</b> <span id="f-email" style="color:#ccc;"></span></div>
+    </div>
+    
+    <label>Técnica</label>
+    <div class="stats-bar"><div id="bar-tecnica" class="stats-fill"></div></div>
+    <label>Táctica</label>
+    <div class="stats-bar"><div id="bar-tactica" class="stats-fill"></div></div>
+    <label>Condicional</label>
+    <div class="stats-bar"><div id="bar-condicional" class="stats-fill"></div></div>
+    
+    <button class="btn-main" style="width:100%" onclick="cerrarModales()">CERRAR</button>
+</div>
+
+<script>
+    const SB_URL = "https://fdmnhkwmetprgdbpujos.supabase.co";
+    const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkbW5oa3dtZXRwcmdkYnB1am9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4ODI5NDEsImV4cCI6MjEwNDQ1ODk0MX0.-U2zMPs0HZ6AdOt0UB_clL1UPXA4XrXARogIaHLeiaw";
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+    let jugadoresData = [];
+
+    async function cargarDatos() {
+        try {
+            const { data, error } = await supabaseClient.from('jugadores').select('*').order('dorsal', { ascending: true });
+            if (error) {
+                console.error(error);
+                const local = localStorage.getItem('jugadores_backup');
+                if (local) jugadoresData = JSON.parse(local);
+            } else if (data) {
+                jugadoresData = data;
+                localStorage.setItem('jugadores_backup', JSON.stringify(data));
+            }
+        } catch(e) {
+            console.error(e);
+        }
+        renderizarTodo();
+    }
+
+    function renderizarTodo() {
+        // Renderizar Campo
+        const campo = document.getElementById('campograma');
+        campo.innerHTML = '';
+        // Renderizar Tabla
+        const tabla = document.getElementById('tabla-cuerpo');
+        tabla.innerHTML = '';
+
+        jugadoresData.forEach(j => {
+            // Dot Campo
+            const dot = document.createElement('div');
+            dot.className = 'jugador-dot';
+            dot.style.left = (j.posicion_x || 50) + '%';
+            dot.style.top = (j.posicion_y || 50) + '%';
+            dot.innerText = j.dorsal;
+            dot.onclick = () => verFicha(j.id);
+            campo.appendChild(dot);
+
+            // Fila Tabla
+            tabla.innerHTML += `
+                <tr>
+                    <td><b>${j.dorsal}</b></td>
+                    <td>${j.nombre}</td>
+                    <td class="actions">
+                        <button class="btn-outline" onclick="verFicha(${j.id})">👁️</button>
+                        <button class="btn-outline" onclick="abrirEditor(${j.id})">✏️</button>
+                        <button class="btn-danger" onclick="borrarJugador(${j.id})">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // --- ACCIONES ---
+
+    function verFicha(id) {
+        const j = jugadoresData.find(x => x.id === id);
+        if (!j) return;
+        document.getElementById('f-nombre').innerText = j.nombre;
+        document.getElementById('f-info').innerText = `Dorsal ${j.dorsal} | ${j.lateralidad} | ${j.nacimiento}`;
+        document.getElementById('f-foto').src = j.foto_url || '';
+        document.getElementById('f-tel').innerText = j.telefono || 'No asignado';
+        document.getElementById('f-email').innerText = j.email || j.correo || 'No asignado';
+        
+        document.getElementById('bar-tecnica').style.width = ((j.tecnica || 0) * 20) + '%';
+        document.getElementById('bar-tactica').style.width = ((j.tactica || 0) * 20) + '%';
+        document.getElementById('bar-condicional').style.width = ((j.condicional || 0) * 20) + '%';
+        
+        document.getElementById('overlay-ficha').style.display = 'block';
+        document.getElementById('modal-ficha').style.display = 'block';
+    }
+
+    function abrirEditor(id = null) {
+        if (id) {
+            const j = jugadoresData.find(x => x.id === id);
+            document.getElementById('editor-titulo').innerText = "Editar Jugador";
+            document.getElementById('edit-id').value = j.id;
+            document.getElementById('edit-nombre').value = j.nombre;
+            document.getElementById('edit-dorsal').value = j.dorsal;
+            document.getElementById('edit-nacimiento').value = j.nacimiento;
+            document.getElementById('edit-lateralidad').value = j.lateralidad;
+            document.getElementById('edit-telefono').value = j.telefono || '';
+            document.getElementById('edit-email').value = j.email || j.correo || '';
+            document.getElementById('edit-foto').value = j.foto_url || '';
+            document.getElementById('edit-tecnica').value = j.tecnica;
+            document.getElementById('edit-tactica').value = j.tactica;
+            document.getElementById('edit-condicional').value = j.condicional;
+            document.getElementById('edit-x').value = j.posicion_x || 50;
+            document.getElementById('edit-y').value = j.posicion_y || 50;
+        } else {
+            document.getElementById('editor-titulo').innerText = "Nuevo Jugador";
+            document.getElementById('edit-id').value = '';
+            document.getElementById('modal-editor').querySelectorAll('input').forEach(i => i.value = '');
+            document.getElementById('edit-x').value = 50;
+            document.getElementById('edit-y').value = 50;
+        }
+        document.getElementById('overlay-editor').style.display = 'block';
+        document.getElementById('modal-editor').style.display = 'block';
+    }
+
+    async function guardarJugador() {
+        const id = document.getElementById('edit-id').value;
+        const payload = {
+            nombre: document.getElementById('edit-nombre').value,
+            dorsal: parseInt(document.getElementById('edit-dorsal').value),
+            nacimiento: parseInt(document.getElementById('edit-nacimiento').value),
+            lateralidad: document.getElementById('edit-lateralidad').value,
+            telefono: document.getElementById('edit-telefono').value,
+            email: document.getElementById('edit-email').value,
+            foto_url: document.getElementById('edit-foto').value,
+            tecnica: parseInt(document.getElementById('edit-tecnica').value) || 0,
+            tactica: parseInt(document.getElementById('edit-tactica').value) || 0,
+            condicional: parseInt(document.getElementById('edit-condicional').value) || 0,
+            posicion_x: parseFloat(document.getElementById('edit-x').value) || 50,
+            posicion_y: parseFloat(document.getElementById('edit-y').value) || 50
+        };
+
+        if (id) {
+            await supabaseClient.from('jugadores').update(payload).eq('id', id);
+        } else {
+            await supabaseClient.from('jugadores').insert([payload]);
+        }
+        
+        cerrarModales();
+        cargarDatos();
+    }
+
+    async function borrarJugador(id) {
+        if (confirm("¿Seguro que quieres eliminar a este jugador?")) {
+            await supabaseClient.from('jugadores').delete().eq('id', id);
+            cargarDatos();
+        }
+    }
+
+    function cerrarModales() {
+        document.querySelectorAll('.modal, .overlay').forEach(el => el.style.display = 'none');
+    }
+
+    function showTab(tab) {
+        document.getElementById('tab-campo').classList.toggle('hidden', tab !== 'campo');
+        document.getElementById('tab-lista').classList.toggle('hidden', tab !== 'lista');
+    }
+
+    window.onload = cargarDatos;
+</script>
+
+</body>
+</html>
