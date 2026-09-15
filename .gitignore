@@ -6,3 +6,10 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Contienen contraseñas reales en texto plano de cuentas de Supabase Auth.
+supabase_crear_usuarios_staff.sql
+supabase_crear_todos_los_usuarios.sql
+supabase_fix_login_prueba.sql
+supabase_fix_crear_usuario.sql
+supabase_add_rol_jugador.sql
